@@ -1,0 +1,84 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.0/JSXTransformer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+    <script type="text/javascript" src="scripts/react-draggable.js"></script>
+    <style type="text/css">
+    body {
+      color: #222;
+      font-family: "Helvetica Neue", sans-serif;
+      font-weight: 200;
+      margin: 0 50px;
+    }
+    .react-draggable, .cursor {
+      cursor: move;
+    }
+    .no-cursor {
+      cursor: auto;
+    }
+    .cursor-y {
+      cursor: ns-resize;
+    }
+    .cursor-x {
+      cursor: ew-resize;
+    }
+    .react-draggable strong {
+      background: #ddd;
+      border: 1px solid #999;
+      border-radius: 3px;
+      display: block;
+      margin-bottom: 10px;
+      padding: 3px 5px;
+      text-align: center;
+    }
+    .box {
+      box-sizing: border-box;
+      background: #fff;
+      border: 1px solid #999;
+      border-radius: 3px;
+      width: 130px;
+      height: 180px;
+      margin: 10px;
+      padding: 10px;
+      display: inline-block;
+    }
+
+    .box h1{
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .Clubs, .Spades{
+
+    }
+
+    .Hearts, .Diamonds{
+      color: red;
+    }
+
+    .table-cards{
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .table-cards .card-list{
+      display: inline-block;
+    }
+    .hands-cards .card-list{
+      display: none;
+    }
+
+  </style>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script type="text/jsx" src="scripts/script.js">
+    </script>
+  </body>
+</html>
