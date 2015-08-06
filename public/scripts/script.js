@@ -181,6 +181,7 @@ var Table = React.createClass({
   	componentDidUpdate: function(prevProps, prevState){
   		$tableCards = $('.table-cards');
   		if($tableCards.length){
+  			console.log("Setter min width");
   			$tableCards.scrollLeft(10000);
   			$('.table-cards .card-list').css('min-width', 0);
   		}
@@ -190,8 +191,7 @@ var Table = React.createClass({
   		if(this.state.tableCards.length){
   			return (
 	  			<div className="table">
-	  				<DrawCard onDrawCard={this.handleDrawCard} />
-	  				<TableCardList data={this.state.tableCards} onDrawCard={this.state.drawnCards}/>
+	  				<TableCardList data={this.state.tableCards} onDrawCard={this.handleDrawCard}/>
 	  				<CardList data={this.state.handCards} />
 	  			</div>
 			);
@@ -238,34 +238,34 @@ var TableCardList = React.createClass({
 		if(position === 4){
 			targetCard = cards[cardIndex - 3];
 		}
-		//console.log("Dragged card: ", card);
-		//console.log("Target card: ", targetCard);
+		
 		if(card.number === targetCard.number || card.suit === targetCard.suit){
+			var consecutiveCardMoves = this.state.consecutiveCardMoves;
 			if(position === 4){
 				var targetIndex = _.findIndex(cards, targetCard);
 				_.pull(cards, targetCard);
 				cards.move(cardIndex - 1, targetIndex);
 				this.setState({
-					cards: cards
+					cards: cards,
+					consecutiveCardMoves: ++consecutiveCardMoves
 				});
 			}else{
 				_.pull(cards, targetCard);
 				this.setState({
-					cards: cards
+					cards: cards,
+					consecutiveCardMoves: ++consecutiveCardMoves
 				});
 			}
 
 			//Avoid moving around after placing card
 			var tableWidth = $('.table')[0].scrollWidth;
 			var boardWidth = $('.table-cards')[0].scrollWidth;
-  			if(boardWidth > tableWidth){
-
+  			if(boardWidth > tableWidth && this.state.consecutiveCardMoves === 1){
+  				console.log("Legger til min width");
   				$('.table-cards .card-list').css('min-width', boardWidth + 150 + "px");
   				$('.table-cards').scrollLeft(10000);
   			}
-  			if(this.props.numberOfDrawnCards > this.state.cards.length){
-				console.log("Flere kort trekt enn på bordet!");
-			}
+
 			return {
 				suit: card.suit,
 				number: card.number,
@@ -278,8 +278,14 @@ var TableCardList = React.createClass({
 			canBePlaced: false
 		};
 	},
+	handleDrawCard: function(){
+		this.props.onDrawCard();
+		this.setState({
+			consecutiveCardMoves: 0
+		});
+	},
 	getInitialState: function() {
-    	return {cards: []};
+    	return {cards: [], shouldSetMinWidth : true};
   	},
   	componentWillReceiveProps: function(nextProps) {
   		var cards = this.state.cards;
@@ -307,7 +313,9 @@ var TableCardList = React.createClass({
 		}.bind(this));
 		var numberOfCards = cardsNotBelowOtherCards.length;
 		return (
+
 			<div className="table-cards">
+				<DrawCard onDrawCard={this.handleDrawCard} />
 				<div>Total stacks of cards: {numberOfCards} </div>
 				<div className="card-list"> 
 					{cardNodes}
