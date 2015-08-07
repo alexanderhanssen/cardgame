@@ -2,31 +2,49 @@ var gulp = require('gulp');
 var source = require('vinyl-source-stream'); // Used to stream bundle for further handling
 var browserify = require('browserify');
 var watchify = require('watchify');
-var reactify = require('reactify'); 
 var concat = require('gulp-concat');
+var babelify = require('babelify');
  
-gulp.task('browserify', function() {
-    bundleBrowserify(false);
-
-/*
-    return watcher
-    .on('update', function () { // When any files update
-        var updateStart = Date.now();
-        console.log('Updating!');
-        watcher.bundle() // Create new bundle that uses the cache for high performance
-        .pipe(source('main.js'))
-    // This is where you add uglifying etc.
-        .pipe(gulp.dest('./public/build/'));
-        console.log('Updated!', (Date.now() - updateStart) + 'ms');
+gulp.task('watch', function () {
+  var watcher = watchify(
+    browserify({
+      entries: ['./public/scripts/main.js'],
+      debug: true,
+      cache: {},
+      packageCache: {},
     })
-    .bundle() // Create the initial bundle when starting the task
-    .pipe(source('main.js'))
-    .pipe(gulp.dest('./public/build/'));
-    */
-});
+      .transform(babelify)
+   );
 
-gulp.task('watch', function(){
-    bundleBrowserify(true);
+  function bundle () {
+    return watcher
+      .bundle()
+      .pipe(source('bundle.js'))
+      .pipe(gulp.dest('./public/build'));
+  }
+
+  function update () {
+    var updateStart = Date.now();
+    console.log('JavaScript changed - recomiling via Browserify');
+    bundle();
+    console.log('Done! ' + (Date.now() - updateStart) + ' ms');
+  }
+
+  watcher.on('update', update);
+
+  return bundle();
+}); 
+
+gulp.task('build', function(){
+    var bundle = browserify({
+        entries: ['./public/scripts/main.js'], // Only need initial file, browserify finds the deps
+        debug: true
+    });
+    bundle.transform(babelify);
+       
+    return bundle.bundle()
+        .pipe(source('bundle.js'))
+        .pipe(gulp.dest('./public/build'));
 });
 
 // I added this so that you see how to run two watch tasks
@@ -38,30 +56,5 @@ gulp.task('css', function () {
     });
 });
 
-
-function bundleBrowserify(shouldWatch) {
-   var bundle = browserify({
-        entries: ['./public/scripts/main.js'], // Only need initial file, browserify finds the deps
-        debug: true
-    });
-    bundle.transform(reactify);
-   console.log(shouldWatch);
-   if (shouldWatch) {
-     bundle = watchify(bundle);
-     bundle.on('update', doUpdate);
-     return bundle;
-   }
-   // Ikke watching
-   return doUpdate();
-
-  function doUpdate(){
-    return bundle.bundle()
-        .pipe(source('main.js'))
-        .pipe(gulp.dest('./public/build'));
-  }
-}
-
-
-
 // Just running the two tasks
-gulp.task('default', ['browserify', 'css']);
+gulp.task('default', ['watch', 'css']);
