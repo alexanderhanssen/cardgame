@@ -1,7 +1,6 @@
 var React = require('react');
 var Draggable = require('react-draggable');
 var _ = require('lodash');
-var $ = require('jquery');
 var allCards = require('./allCards.js');
 
 Array.prototype.move = function (old_index, new_index) {

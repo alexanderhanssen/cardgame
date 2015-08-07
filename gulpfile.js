@@ -6,14 +6,9 @@ var reactify = require('reactify');
 var concat = require('gulp-concat');
  
 gulp.task('browserify', function() {
-    var bundler = browserify({
-        entries: ['./public/scripts/main.js'], // Only need initial file, browserify finds the deps
-        transform: [reactify], // We want to convert JSX to normal javascript
-        debug: true, // Gives us sourcemapping
-        cache: {}, packageCache: {}, fullPaths: false // Requirement of watchify
-    });
-    var watcher  = watchify(bundler);
+    bundleBrowserify(false);
 
+/*
     return watcher
     .on('update', function () { // When any files update
         var updateStart = Date.now();
@@ -27,6 +22,11 @@ gulp.task('browserify', function() {
     .bundle() // Create the initial bundle when starting the task
     .pipe(source('main.js'))
     .pipe(gulp.dest('./public/build/'));
+    */
+});
+
+gulp.task('watch', function(){
+    bundleBrowserify(true);
 });
 
 // I added this so that you see how to run two watch tasks
@@ -37,6 +37,31 @@ gulp.task('css', function () {
         .pipe(gulp.dest('build/'));
     });
 });
+
+
+function bundleBrowserify(shouldWatch) {
+   var bundle = browserify({
+        entries: ['./public/scripts/main.js'], // Only need initial file, browserify finds the deps
+        debug: true
+    });
+    bundle.transform(reactify);
+   console.log(shouldWatch);
+   if (shouldWatch) {
+     bundle = watchify(bundle);
+     bundle.on('update', doUpdate);
+     return bundle;
+   }
+   // Ikke watching
+   return doUpdate();
+
+  function doUpdate(){
+    return bundle.bundle()
+        .pipe(source('main.js'))
+        .pipe(gulp.dest('./public/build'));
+  }
+}
+
+
 
 // Just running the two tasks
 gulp.task('default', ['browserify', 'css']);
