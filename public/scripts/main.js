@@ -1,5 +1,8 @@
-var Draggable = ReactDraggable;
+var React = require('react');
+var Draggable = require('react-draggable');
 var _ = require('lodash');
+var $ = require('jquery');
+var allCards = require('./allCards.js');
 
 Array.prototype.move = function (old_index, new_index) {
     if (new_index >= this.length) {
@@ -18,7 +21,7 @@ var Card = React.createClass({
 			<div className="card">
 				<h3>{this.props.suit}</h3>
 				<p>{this.props.number}</p>
-			</div>
+			</div>   
 		);
 	}
 });
@@ -114,7 +117,6 @@ var TableCard = React.createClass({
 
 var Game = React.createClass({
 	render: function() {
-
 		return (
 			<div className="game">
 				<Table/>
@@ -124,7 +126,6 @@ var Game = React.createClass({
 });
 
 var DrawCard = React.createClass({
-	
 	handleClick: function(e){
 		this.props.onDrawCard();
 	},
@@ -140,21 +141,14 @@ var DrawCard = React.createClass({
 
 var Table = React.createClass({
 	fetchCards: function(){
-		$.ajax({
-			url: '/cards.json',
-			dataType: 'json',
-			cache: false,
-			success: function(data){
-				this.setState({handCards: _.shuffle(data), tableCards: []});
-			}.bind(this),
-			error: function(xhr, status, err){
-				console.error('cards.json', status, err.toString());
-			}.bind(this)
+		this.setState({
+			handCards: _.shuffle(allCards.getAll()),
+			tableCards: []
 		});
 	},
 	handleDrawCard: function() {
 		var cardToPlaceOnTable = this.state.handCards.shift();
-		var handCards = this.state.handCards;
+		var handCards = this.state.handCards;  
 		var tableCards = this.state.tableCards;
 		tableCards.push(cardToPlaceOnTable);
 		var drawnCards = this.state.drawnCards;
@@ -180,15 +174,14 @@ var Table = React.createClass({
     	return {handCards: [], tableCards : [], drawnCards: 0};
   	},
   	componentDidUpdate: function(prevProps, prevState){
-  		$tableCards = $('.table-cards');
-  		if($tableCards.length){
+  		var tableCards = document.querySelector('.table-cards');
+  		if(tableCards){
   			console.log("Setter min width");
-  			$tableCards.scrollLeft(10000);
+  			tableCards.scrollLeft = 10000;
   			//$('.table-cards .card-list').css('min-width', 0);
   		}
   	},
   	render: function() {
-  		//TODO: GJØR ET ELLER ANNET SLIK AT MAN KAN SE OM MAN HAR FLYTTET KORT TO GANGER FØR MAN HAR TREKT ET NYTT ET
   		if(this.state.tableCards.length){
   			return (
 	  			<div className="table">
@@ -263,8 +256,8 @@ var TableCardList = React.createClass({
 			var boardWidth = $('.table-cards')[0].scrollWidth;
   			if(boardWidth > tableWidth && this.state.consecutiveCardMoves === 1){
   				console.log("Legger til min width");
-  				$('.table-cards .card-list').css('min-width', boardWidth + 150 + "px");
-  				$('.table-cards').scrollLeft(10000);
+  				document.querySelector(".table-cards .card-list").style.minWidth = boardWidth + 150 + "px";
+  				document.querySelector(".table-cards").scrollLeft = 10000;
   			}
 
 			return {
