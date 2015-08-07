@@ -5,9 +5,10 @@
   "main": "server.js",
   "dependencies": {
     "body-parser": "^1.4.3",
+    "browserify": "^11.0.1",
     "express": "^4.4.5",
-    "browserify": "11.0.1",
-    "reactify": "1.1.1"
+    "lodash": "^3.10.1",
+    "reactify": "^1.1.1"
   },
   "devDependencies": {},
   "scripts": {
@@ -19,7 +20,7 @@
     "url": "https://github.com/alexanderhanssen/cardgame.git"
   },
   "author": "alexanderhanssen",
-  "engines" : {
-    "node" : "0.12.x"
+  "engines": {
+    "node": "0.12.x"
   }
 }

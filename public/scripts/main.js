@@ -1,4 +1,5 @@
 var Draggable = ReactDraggable;
+var _ = require('lodash');
 
 Array.prototype.move = function (old_index, new_index) {
     if (new_index >= this.length) {
@@ -183,7 +184,7 @@ var Table = React.createClass({
   		if($tableCards.length){
   			console.log("Setter min width");
   			$tableCards.scrollLeft(10000);
-  			$('.table-cards .card-list').css('min-width', 0);
+  			//$('.table-cards .card-list').css('min-width', 0);
   		}
   	},
   	render: function() {
