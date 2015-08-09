@@ -3,7 +3,8 @@ var allCards = ["Spades", "Hearts", "Clubs", "Diamonds"].reduce(function (acc, c
   for(var i = 2; i < 15; ++i) {
     cards = cards.concat({
       suit: current,
-      number: i
+      number: i,
+      stacks: 0
     });
   }
   return acc.concat(cards);

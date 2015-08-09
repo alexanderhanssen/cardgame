@@ -1,7 +1,8 @@
-var React = require('react');
+var React = require('react/addons');
 var Draggable = require('react-draggable');
 var _ = require('lodash');
 var allCards = require('./allCards.js');
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
 
 Array.prototype.move = function (old_index, new_index) {
     if (new_index >= this.length) {
@@ -25,12 +26,20 @@ var Card = React.createClass({
 	}
 });
 
+var CardStack = React.createClass({
+	render: function() {
+		return (
+			<div className="stack">
+			</div>
+		);
+	}
+})
+
 var TableCard = React.createClass({
 	getInitialState: function() {
 		return {
 			left: 0,
 			top: 0,
-			isStacked: false
 		};
 	},
 	onStart: function(event, ui) {
@@ -39,17 +48,8 @@ var TableCard = React.createClass({
 
     onStop: function(event, ui) {
     	var leftPos = ui.position.left;
-    	var evaluatedCard = this.props.onDrop(leftPos, this.props.suit, this.props.number);
-    	if(evaluatedCard.canBePlaced && evaluatedCard.suit === this.props.suit && evaluatedCard.number === this.props.number){
-    		if(leftPos >= -200 && leftPos <= -100){
-    			this.setState({left: -150});
-    		}
-    		if(leftPos >= -500 && leftPos <= -375){
-    			this.setState({left: -450});
-    		}
-    		this.setState({isStacked: true});
-    		//console.log("Moved card: ", this.props.suit, this.props.number);
-    	}else{
+    	var evaluatedCard = this.props.onDrop(leftPos, this.props.suit, this.props.number, this.props.stacks);
+    	if(!evaluatedCard.canBePlaced){
       		this.setState({left: 0, top: 0});
     	}
     },
@@ -95,9 +95,26 @@ var TableCard = React.createClass({
 		}
 		return numberIcon;
     },
+    
 	render: function() {
 		var drags = {onStart: this.onStart, onStop: this.onStop};
 		var style = 'table-card box ' + this.props.suit + " " + this.props.number;
+		var stacks = [];
+		for(var i = 0; i < this.props.stacks; i++){
+			stacks.push(<CardStack key={i}/>);
+		}
+		var stackStyle;
+		if(stacks.length > 0){
+			stackStyle = {
+				bottom: "-" + ((stacks.length*2) + 1) + "px"
+			};
+		}else{
+			stackStyle = {
+				bottom: "0px"
+			};
+		}
+		
+		console.log(stackStyle);
 		return (
 			<Draggable
                 zIndex={100}
@@ -106,9 +123,14 @@ var TableCard = React.createClass({
                 bounds={{left: -600, right: 0}}
                 axis="x"
                 {...drags}>
-	            <div className={style} >
-					<h1>{this.getNumberIcon()} {this.getSuitIcon()}</h1>
-				</div>
+                <span className={style}>
+					<div>
+						<h1>{this.getNumberIcon()} {this.getSuitIcon()}</h1>
+					</div>
+					<div className="stacks" style={stackStyle}>
+						{stacks}
+					</div>
+                </span>
             </Draggable>
 		);
 	}
@@ -119,17 +141,6 @@ var Game = React.createClass({
 		return (
 			<div className="game">
 				<Table/>
-			</div>
-		);
-	}
-});
-
-var GameOver = React.createClass({
-	render: function() {
-		return (
-			<div className="game-over">
-				<h1>Game over, well played!</h1>
-				<p>Stacks of cards total: {this.props.totalStacks}</p>
 			</div>
 		);
 	}
@@ -177,17 +188,6 @@ var Table = React.createClass({
 
 	componentDidMount: function() {
 	    this.fetchCards();
-	    /*
-	    var selectedCards = [
-  			{"suit": "Spades", "number": 2},
-  			{"suit": "Hearts", "number": 2},
-  			{"suit": "Diamonds", "number": 2},
-  			{"suit": "Spades", "number": 3},
-		];
-	    this.setState({
-	    	dummyCards : selectedCards
-	    });
-	    */
   	},
   	getInitialState: function() {
     	return {handCards: [], tableCards : [], drawnCards: 0};
@@ -222,28 +222,31 @@ var Table = React.createClass({
 });
 
 var TableCardList = React.createClass({
-	handleReleaseCard: function(left, suit, number){
+	handleReleaseCard: function(left, suit, number, stacks){
 		var cards = this.state.cards;
 		var card = {
 			suit: suit,
-			number: number
+			number: number,
+			stacks: stacks
 		};
 		var numberOfCards = cards.length;
 		if(left >= -200 && left <= -100){
-			return this.canCardBePlacedAtPosition(card, 2);
+			return this.canCardBePlacedAtPosition(card, 2, stacks);
 		}
 		if(left >= -500 && left <= -375){
-			return this.canCardBePlacedAtPosition(card, 4);
+			return this.canCardBePlacedAtPosition(card, 4, stacks);
 		}
 		return {
 			suit: suit,
 			number: number,
-			canBePlaced: false
+			canBePlaced: false,
+			stacks: stacks
 		};
 	},
-	canCardBePlacedAtPosition: function(card, position){
+	canCardBePlacedAtPosition: function(card, position, stacks){
 		var cards = this.state.cards;
 		var numberOfCards = cards.length;
+		console.log(stacks);
 		if(cards.length < numberOfCards) return false;
 		var cardIndex = _.findIndex(cards, card);
 		var targetCard;
@@ -253,11 +256,12 @@ var TableCardList = React.createClass({
 		if(position === 4){
 			targetCard = cards[cardIndex - 3];
 		}
-		
 		if(card.number === targetCard.number || card.suit === targetCard.suit){
 			var consecutiveCardMoves = this.state.consecutiveCardMoves;
 			if(position === 4){
 				var targetIndex = _.findIndex(cards, targetCard);
+				cards[cardIndex].stacks = targetCard.stacks + card.stacks + 1;
+				card.stacks = targetCard.stacks + card.stacks + 1
 				_.pull(cards, targetCard);
 				cards.move(cardIndex - 1, targetIndex);
 				this.setState({
@@ -265,6 +269,8 @@ var TableCardList = React.createClass({
 					consecutiveCardMoves: ++consecutiveCardMoves
 				});
 			}else{
+				cards[cardIndex].stacks = targetCard.stacks + card.stacks + 1;
+				card.stacks = targetCard.stacks + card.stacks + 1;
 				_.pull(cards, targetCard);
 				this.setState({
 					cards: cards,
@@ -284,17 +290,19 @@ var TableCardList = React.createClass({
   			if((cardListWidth - 150)  === cardsCombinedWidth){
   				document.querySelector('.table-cards .card-list').style.minWidth = 0;
   			}
-			
+
 			return {
 				suit: card.suit,
 				number: card.number,
-				canBePlaced: true
+				canBePlaced: true,
+				stacks: card.stacks
 			};
 		}
 		return {
 			suit: card.suit,
 			number: card.number,
-			canBePlaced: false
+			canBePlaced: false,
+			stacks: card.stacks
 		};
 	},
 	handleDrawCard: function(){
@@ -316,7 +324,7 @@ var TableCardList = React.createClass({
   	},
   	componentDidMount: function() {
   		var cards = this.state.cards;
-  		cards.push({suit: this.props.data[0].suit, number: this.props.data[0].number});
+  		cards.push({suit: this.props.data[0].suit, number: this.props.data[0].number, stacks: this.props.data[0].stacks});
   		this.setState({
   			cards: cards
   		});
@@ -327,7 +335,7 @@ var TableCardList = React.createClass({
 		var cardsNotBelowOtherCards = _.without(this.state.cards, cards);
 		var cardNodes = cardsNotBelowOtherCards.map(function(card, index){
 			return (
-				<TableCard suit={card.suit} number={card.number} key={index} onDrop={this.handleReleaseCard} />
+				<TableCard suit={card.suit} number={card.number} key={index} onDrop={this.handleReleaseCard} stacks={card.stacks} />
 			);
 		}.bind(this));
 		var numberOfCards = cardsNotBelowOtherCards.length;
@@ -348,7 +356,11 @@ var CardList = React.createClass({
 		var numberOfCards = this.props.data.length;
 		return (
 			<div className="hands-cards">
-				<div> Remaining cards: {numberOfCards} </div>
+				<ReactCSSTransitionGroup transitionName="counter">
+					<div>
+			          {numberOfCards}
+					</div>
+		        </ReactCSSTransitionGroup>
 			</div>
 		);
 	}
