@@ -3,67 +3,8 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Hello React</title>
-    <style type="text/css">
-    body {
-      color: #222;
-      font-family: "Helvetica Neue", sans-serif;
-      font-weight: 200;
-      margin: 0 50px;
-    }
-    .react-draggable, .cursor {
-      cursor: move;
-    }
-    .no-cursor {
-      cursor: auto;
-    }
-    .cursor-y {
-      cursor: ns-resize;
-    }
-    .cursor-x {
-      cursor: ew-resize;
-    }
-    .box {
-      box-sizing: border-box;
-      background: #fff;
-      border: 1px solid #999;
-      border-radius: 3px;
-      width: 130px;
-      height: 180px;
-      margin: 10px;
-      padding: 10px;
-      display: inline-block;
-    }
-
-    .box h1{
-      text-align: center;
-      margin-top: 50px;
-    }
-
-    .Clubs, .Spades{
-
-    }
-
-    .Hearts, .Diamonds{
-      color: red;
-    }
-
-    .table-cards{
-      overflow-x: auto;
-      white-space: nowrap;
-    }
-    .table-cards .card-list{
-      display: inline-block;
-    }
-    .hands-cards .card-list{
-      display: none;
-    }
-
-    .draw-card{
-      position: absolute;
-    }
-
-  </style>
+    <title>Card game</title>
+    <link href="build/cards.css" rel="stylesheet" type="text/css"/>
   </head>
   <body>
     <div id="content"></div>

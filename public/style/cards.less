@@ -1,0 +1,124 @@
+body {
+      color: #222;
+      font-family: "Helvetica Neue", sans-serif;
+      font-weight: 200;
+      margin: 0 50px;
+    }
+    html, body, .content, .game, .table{
+      height: 100%;
+    }
+    .react-draggable, .cursor {
+      cursor: move;
+    }
+    .no-cursor {
+      cursor: auto;
+    }
+    .cursor-y {
+      cursor: ns-resize;
+    }
+    .cursor-x {
+      cursor: ew-resize;
+    }
+    .box {
+      box-sizing: border-box;
+      background: #fff;
+      border: 1px solid #999;
+      border-radius: 3px;
+      width: 130px;
+      height: 180px;
+      margin: 10px;
+      padding: 10px;
+      display: inline-block;
+      transition: .1s background ease-in;
+      h1{
+        text-align: center;
+        margin-top: 50px;
+      }
+    }
+
+    .Clubs, .Spades{
+    }
+
+    .Hearts, .Diamonds{
+      color: red;
+    }
+
+    .table-cards{
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .table-cards .card-list{
+      display: inline-block;
+      margin: 17% auto;
+    }
+
+    .draw-card{
+      position: absolute;
+      width: 90%;
+      bottom: 0;
+      text-align: center;
+      height: 250px;
+      .cards{
+        position: absolute;
+        left: 50%;
+        top: 0;
+      }
+      button{
+        width: 100%;
+        height: 100%;
+        border: none;
+        background-color: white;
+        position: relative;
+        &:focus{
+          outline: 0;
+        }
+      }
+      .cards div{
+        position: absolute;
+        height: 180px;
+        width: 130px;
+        box-sizing: border-box;
+        background: #fff;
+        border: 1px solid #999;
+        transition: .3s all ease-in;
+        backface-visibility: hidden;
+        background: url("../../public/images/card-back.jpg");
+        background-size: contain;
+        &:nth-child(1){
+          transform: rotate(10deg);
+        }
+        &:nth-child(2){
+          transform: rotate(5deg);
+        }
+      }
+    }
+    
+    .drawn-50{
+      div:nth-child(1){ display: none};
+    }
+    .drawn-51{
+      div:nth-child(1){ display: none};
+      div:nth-child(2){ display: none};
+    }
+    .drawn-52{
+      div:nth-child(1){ display: none};
+      div:nth-child(2){ display: none};
+      div:nth-child(3){ display: none};
+    }
+    .card-stacks{
+      position: absolute;
+    }
+
+    .draw-card .cards.drawn-50 div:nth-child(1){
+      display: none;
+    }
+    .draw-card .cards.drawn-51 div:nth-child(2){
+      display: none;
+    }
+    .draw-card .cards.drawn-52 div:nth-child(3){
+      display: none;
+    }
+
+    .draw-card .cards div:nth-child(3):hover{
+      transform: scale(1.05);
+    }

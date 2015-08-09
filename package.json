@@ -9,6 +9,8 @@
     "express": "^4.4.5",
     "gulp": "^3.9.0",
     "gulp-concat": "^2.6.0",
+    "gulp-less": "^3.0.3",
+    "gulp-minify-css": "^1.2.0",
     "lodash": "^3.10.1",
     "react": "^0.13.3",
     "react-draggable": "^0.8.1",

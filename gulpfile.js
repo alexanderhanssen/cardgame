@@ -4,6 +4,8 @@ var browserify = require('browserify');
 var watchify = require('watchify');
 var concat = require('gulp-concat');
 var babelify = require('babelify');
+var less = require('gulp-less');
+var minifyCSS = require('gulp-minify-css');
  
 gulp.task('watch', function () {
   var watcher = watchify(
@@ -47,14 +49,20 @@ gulp.task('build', function(){
         .pipe(gulp.dest('./public/build'));
 });
 
-// I added this so that you see how to run two watch tasks
-gulp.task('css', function () {
-    gulp.watch('styles/**/*.css', function () {
-        return gulp.src('styles/**/*.css')
-        .pipe(concat('main.css'))
-        .pipe(gulp.dest('build/'));
-    });
+gulp.task('styles', function () {
+    return gulp.src('public/style/cards.less')
+    .pipe(less())
+    .pipe(minifyCSS())
+    .pipe(gulp.dest('public/build/'));
 });
 
 // Just running the two tasks
-gulp.task('default', ['watch', 'css']);
+//gulp.task('default', ['watch', 'styles']);
+
+gulp.task('default', function(){
+ gulp.run('watch', 'styles');
+  gulp.watch('public/style/**', function(event) {
+        gulp.run('styles');
+    })
+});
+

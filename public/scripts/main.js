@@ -130,9 +130,17 @@ var DrawCard = React.createClass({
 	},
 	
 	render: function() {
+		var className = "cards drawn-" + this.props.cardsDrawn;
 		return (
             <div className="draw-card">
-				<button onClick={this.handleClick}>Draw a card</button> 
+				<button onClick={this.handleClick}>
+					<div className={className}>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+					
+				</button> 
 			</div>
 		)
 	}
@@ -142,6 +150,7 @@ var Table = React.createClass({
 	fetchCards: function(){
 		this.setState({
 			handCards: _.shuffle(allCards.getAll()),
+			//handCards: allCards.getAll(),
 			tableCards: []
 		});
 	},
@@ -175,9 +184,11 @@ var Table = React.createClass({
   	componentDidUpdate: function(prevProps, prevState){
   		var tableCards = document.querySelector('.table-cards');
   		if(tableCards){
-  			console.log("Setter min width");
-  			tableCards.scrollLeft = 10000;
-  			//$('.table-cards .card-list').css('min-width', 0);
+  			var cardListWidth = document.querySelector('.table-cards .card-list').scrollWidth;
+			var cardsCombinedWidth = document.querySelectorAll('.table-card').length * 150;
+			if(cardsCombinedWidth >= cardListWidth){
+  				tableCards.scrollLeft = 10000;
+			}
   		}
   	},
   	render: function() {
@@ -251,14 +262,18 @@ var TableCardList = React.createClass({
 			}
 
 			//Avoid moving around after placing card
-			var tableWidth = $('.table')[0].scrollWidth;
-			var boardWidth = $('.table-cards')[0].scrollWidth;
-  			if(boardWidth > tableWidth && this.state.consecutiveCardMoves === 1){
-  				console.log("Legger til min width");
+			var tableWidth = document.querySelector('.table').scrollWidth;
+			var boardWidth = document.querySelector('.table-cards').scrollWidth;
+			var cardListWidth = document.querySelector('.table-cards .card-list').scrollWidth;
+			var cardsCombinedWidth = numberOfCards * 150;
+  			if(boardWidth > tableWidth && this.state.consecutiveCardMoves === 1 && cardListWidth < cardsCombinedWidth ){
   				document.querySelector(".table-cards .card-list").style.minWidth = boardWidth + 150 + "px";
   				document.querySelector(".table-cards").scrollLeft = 10000;
   			}
-
+  			if((cardListWidth - 150)  === cardsCombinedWidth){
+  				document.querySelector('.table-cards .card-list').style.minWidth = 0;
+  			}
+			
 			return {
 				suit: card.suit,
 				number: card.number,
@@ -306,13 +321,12 @@ var TableCardList = React.createClass({
 		}.bind(this));
 		var numberOfCards = cardsNotBelowOtherCards.length;
 		return (
-
 			<div className="table-cards">
-				<DrawCard onDrawCard={this.handleDrawCard} />
-				<div>Total stacks of cards: {numberOfCards} </div>
-				<div className="card-list"> 
-					{cardNodes}
+				<div className="card-stacks">Total stacks of cards: {numberOfCards} </div>
+				<div className="card-list">
+			          {cardNodes}
 				</div>
+				<DrawCard cardsDrawn={cards.length} onDrawCard={this.handleDrawCard} />
 			</div>
 		);
 	}
@@ -320,18 +334,10 @@ var TableCardList = React.createClass({
 
 var CardList = React.createClass({
 	render: function() {
-		var cardNodes = this.props.data.map(function(card, index){
-			return (
-				<Card suit={card.suit} number={card.number} key={index}/>
-			);
-		});
 		var numberOfCards = this.props.data.length;
 		return (
 			<div className="hands-cards">
-				<div> {numberOfCards} </div>
-				<div className="card-list"> 
-					{cardNodes}
-				</div>
+				<div> Remaining cards: {numberOfCards} </div>
 			</div>
 		);
 	}
