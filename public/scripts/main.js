@@ -124,6 +124,17 @@ var Game = React.createClass({
 	}
 });
 
+var GameOver = React.createClass({
+	render: function() {
+		return (
+			<div className="game-over">
+				<h1>Game over, well played!</h1>
+				<p>Stacks of cards total: {this.props.totalStacks}</p>
+			</div>
+		);
+	}
+});
+
 var DrawCard = React.createClass({
 	handleClick: function(e){
 		this.props.onDrawCard();

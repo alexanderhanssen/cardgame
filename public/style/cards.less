@@ -4,7 +4,7 @@ body {
       font-weight: 200;
       margin: 0 50px;
     }
-    html, body, .content, .game, .table{
+    html, body, #content, .game, .table{
       height: 100%;
     }
     .react-draggable, .cursor {
@@ -49,7 +49,7 @@ body {
     }
     .table-cards .card-list{
       display: inline-block;
-      margin: 17% auto;
+      margin: 10% auto;
     }
 
     .draw-card{
@@ -84,6 +84,7 @@ body {
         backface-visibility: hidden;
         background: url("../../public/images/card-back.jpg");
         background-size: contain;
+        cursor: pointer;;
         &:nth-child(1){
           transform: rotate(10deg);
         }
@@ -92,7 +93,7 @@ body {
         }
       }
     }
-    
+
     .drawn-50{
       div:nth-child(1){ display: none};
     }
