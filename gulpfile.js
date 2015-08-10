@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var source = require('vinyl-source-stream'); // Used to stream bundle for further handling
+var source = require('vinyl-source-stream');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var concat = require('gulp-concat');
@@ -27,7 +27,7 @@ gulp.task('watch', function () {
 
   function update () {
     var updateStart = Date.now();
-    console.log('JavaScript changed - recomiling via Browserify');
+    console.log('Recompiling');
     bundle();
     console.log('Done! ' + (Date.now() - updateStart) + ' ms');
   }
@@ -39,7 +39,7 @@ gulp.task('watch', function () {
 
 gulp.task('build', function(){
     var bundle = browserify({
-        entries: ['./public/scripts/main.js'], // Only need initial file, browserify finds the deps
+        entries: ['./public/scripts/main.js'],
         debug: true
     });
     bundle.transform(babelify);
