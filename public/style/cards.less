@@ -1,157 +1,159 @@
 body {
-      color: #222;
-      font-family: "Helvetica Neue", sans-serif;
-      font-weight: 200;
-      margin: 0 50px;
-    }
-    html, body, #content, .game, .table{
-      height: 100%;
-    }
-    .react-draggable, .cursor {
-      cursor: move;
-    }
-    .no-cursor {
-      cursor: auto;
-    }
-    .cursor-y {
-      cursor: ns-resize;
-    }
-    .cursor-x {
-      cursor: ew-resize;
-    }
-    .box {
-      box-sizing: border-box;
-      background: #fff;
-      border: 1px solid #999;
-      border-radius: 1px;
-      width: 130px;
-      height: 180px;
-      margin: 10px;
-      padding: 10px;
-      display: inline-block;
-      transition: .1s background ease-in;
-      h1{
-        text-align: center;
-        margin-top: 50px;
-      }
-    }
+color: #222;
+font-family: "Helvetica Neue", sans-serif;
+font-weight: 200;
+margin: 0 50px;
+}
 
-    .stacks{
-      position: absolute;
-      bottom: 0;
-      margin-left: -21px;
-    }
+html, body, #content, .game, .table{
+  height: 100%;
+}
 
-    .stack{
-      height: 2px;
-      width: 130px;
-      box-sizing: border-box;
-      margin: 0 10px;
-      padding: 0 10px;
-      border-bottom: 1px solid #999;
-      border-left: 1px solid #999;
-      border-right: 1px solid #999;
-    }
+.react-draggable, .cursor {
+  cursor: move;
+}
 
-    .Clubs, .Spades{
-    }
+.no-cursor {
+  cursor: auto;
+}
 
-    .Hearts, .Diamonds{
-      color: red;
-    }
+.cursor-y {
+  cursor: ns-resize;
+}
+.cursor-x {
+  cursor: ew-resize;
+}
+.box {
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 1px;
+  width: 130px;
+  height: 180px;
+  margin: 10px;
+  padding: 10px;
+  display: inline-block;
+  transition: .1s background ease-in;
+  h1{
+    text-align: center;
+    margin-top: 50px;
+  }
+}
 
-    .table-cards{
-      overflow-x: auto;
-      white-space: nowrap;
-    }
-    .table-cards .card-list{
-      display: inline-block;
-      margin: 10% auto;
-    }
+.stacks{
+  position: absolute;
+  bottom: 0;
+  margin-left: -21px;
+}
 
-    .hands-cards{
-      display: inline-block;
-      position: absolute;
-      bottom: 270px;
-      left: 50%;
-      margin-left: -50px;
-      width: 130px;
-      text-align: center;
-    }
+.stack{
+  height: 2px;
+  width: 130px;
+  box-sizing: border-box;
+  margin: 0 10px;
+  padding: 0 10px;
+  border-bottom: 1px solid #999;
+  border-left: 1px solid #999;
+  border-right: 1px solid #999;
+}
 
-    .draw-card{
-      position: absolute;
-      width: 90%;
-      bottom: 0;
-      text-align: center;
-      height: 250px;
-      .cards{
-        box-sizing: border-box;
-        position: absolute;
-        left: 50%;
-        padding: 0px 0px;
-        margin-left: -50px;
-        top: 0;
-        width: 130px;
-        height: 1px;
-      }
-      button{
-        width: 100%;
-        height: 100%;
-        border: none;
-        background-color: white;
-        position: relative;
-        &:focus{
-          outline: 0;
-        }
-      }
-      .cards div{
-        position: absolute;
-        height: 180px;
-        width: 130px;
-        box-sizing: border-box;
-        background: #fff;
-        border: 1px solid #999;
-        transition: .3s all ease-in;
-        backface-visibility: hidden;
-        background: url("../../public/images/card-back.jpg");
-        background-size: contain;
-        cursor: pointer;;
-        &:nth-child(1){
-          transform: rotate(10deg);
-        }
-        &:nth-child(2){
-          transform: rotate(5deg);
-        }
-      }
-    }
+.Hearts, .Diamonds{
+  color: red;
+}
 
-    .drawn-50{
-      div:nth-child(1){ display: none};
-    }
-    .drawn-51{
-      div:nth-child(1){ display: none};
-      div:nth-child(2){ display: none};
-    }
-    .drawn-52{
-      div:nth-child(1){ display: none};
-      div:nth-child(2){ display: none};
-      div:nth-child(3){ display: none};
-    }
-    .card-stacks{
-      position: absolute;
-    }
+.table-cards{
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.table-cards .card-list{
+  display: inline-block;
+  margin: 10% auto;
+}
 
-    .draw-card .cards.drawn-50 div:nth-child(1){
-      display: none;
-    }
-    .draw-card .cards.drawn-51 div:nth-child(2){
-      display: none;
-    }
-    .draw-card .cards.drawn-52 div:nth-child(3){
-      display: none;
-    }
+.hands-cards{
+  position: absolute;
+  bottom: 270px;
+  width: 90%;
+  text-align: center;
+  div{
+    display: inline-block;
+    padding-left: 25px;
+  }
+}
 
-    .draw-card .cards div:nth-child(3):hover{
-      transform: scale(1.05);
+.draw-card{
+  position: absolute;
+  width: 90%;
+  bottom: 0;
+  text-align: center;
+  height: 250px;
+  .cards{
+    box-sizing: border-box;
+    position: absolute;
+    left: 50%;
+    padding: 0px 0px;
+    margin-left: -50px;
+    top: 0;
+    width: 130px;
+    height: 1px;
+  }
+  button{
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: white;
+    position: relative;
+    &:focus{
+      outline: 0;
     }
+  }
+  .cards div{
+    position: absolute;
+    height: 180px;
+    width: 130px;
+    box-sizing: border-box;
+    background: #fff;
+    border: 1px solid #999;
+    transition: .3s all ease-in;
+    backface-visibility: hidden;
+    background: url("../../public/images/card-back.jpg");
+    background-size: contain;
+    cursor: pointer;;
+    &:nth-child(1){
+      transform: rotate(10deg);
+    }
+    &:nth-child(2){
+      transform: rotate(5deg);
+    }
+  }
+}
+
+.drawn-50{
+  div:nth-child(1){ display: none};
+}
+.drawn-51{
+  div:nth-child(1){ display: none};
+  div:nth-child(2){ display: none};
+}
+.drawn-52{
+  div:nth-child(1){ display: none};
+  div:nth-child(2){ display: none};
+  div:nth-child(3){ display: none};
+}
+.card-stacks{
+  position: absolute;
+}
+
+.draw-card .cards.drawn-50 div:nth-child(1){
+  display: none;
+}
+.draw-card .cards.drawn-51 div:nth-child(2){
+  display: none;
+}
+.draw-card .cards.drawn-52 div:nth-child(3){
+  display: none;
+}
+
+.draw-card .cards div:nth-child(3):hover{
+  transform: scale(1.05);
+}
