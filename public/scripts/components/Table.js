@@ -4,6 +4,7 @@ var CardLists = require('./CardLists.js');
 var CardList = CardLists.CardList;
 var TableCardList = CardLists.TableCardList;
 var DrawCard = require('./DrawCard.js');
+var CardStore = require('../CardStore.js');
 
 var Table = React.createClass({
 	fetchCards: function(){
