@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var allCards = require('./allCards.js');
+var allCards = require('../allCards.js');
 var CardLists = require('./CardLists.js');
 var CardList = CardLists.CardList;
 var TableCardList = CardLists.TableCardList;

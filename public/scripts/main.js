@@ -1,6 +1,6 @@
 var React = require('react/addons');
 window.React = React;
-var Table = require('./Table.js');
+var Table = require('./components/Table.js');
 
 var Game = React.createClass({
 	render: function() {
