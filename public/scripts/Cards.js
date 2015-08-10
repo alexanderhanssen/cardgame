@@ -3,8 +3,7 @@ var Draggable = require('react-draggable');
 var CardStack = React.createClass({
 	render: function() {
 		return (
-			<div className="stack">
-			</div>
+			<div className="stack"></div>
 		);
 	}
 })
@@ -16,9 +15,6 @@ var TableCard = React.createClass({
 			top: 0,
 		};
 	},
-	onStart: function(event, ui) {
-      //this.setState({left: ui.position.left, top: ui.position.top});
-    },
 
     onStop: function(event, ui) {
     	var leftPos = ui.position.left;
@@ -71,7 +67,7 @@ var TableCard = React.createClass({
     },
     
 	render: function() {
-		var drags = {onStart: this.onStart, onStop: this.onStop};
+		var drags = {onStop: this.onStop};
 		var style = 'table-card box ' + this.props.suit + " " + this.props.number;
 		var stacks = [];
 		for(var i = 0; i < this.props.stacks; i++){

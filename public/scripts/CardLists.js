@@ -18,11 +18,10 @@ Array.prototype.move = function (old_index, new_index) {
 var CardList = React.createClass({
 	render: function() {
 		var numberOfCards = this.props.data.length;
+		
 		return (
 			<div className="hands-cards">
-					<div>
-			          {numberOfCards}
-					</div>
+				<div>{numberOfCards}</div>
 			</div>
 		);
 	}
@@ -136,7 +135,6 @@ var TableCardList = React.createClass({
   		});
   	},
 	render: function(){
-
 		var cards = this.props.data;
 		var cardsNotBelowOtherCards = _.without(this.state.cards, cards);
 		var cardNodes = cardsNotBelowOtherCards.map(function(card, index){
@@ -145,6 +143,7 @@ var TableCardList = React.createClass({
 			);
 		}.bind(this));
 		var numberOfCards = cardsNotBelowOtherCards.length;
+
 		return (
 			<div className="table-cards">
 				<div className="card-stacks">Total stacks of cards: {numberOfCards} </div>
