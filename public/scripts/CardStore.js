@@ -10,6 +10,8 @@ var CHANGE_EVENT = 'change';
 var _cardsLeftCount = 52;
 var _tableCards = [];
 var _handsCards = _.shuffle(allCards.getAll());
+//var _handsCards = allCards.getAll();
+var _consecutiveCardMoves = 0;
 
 function cardsLeft(){
 	_cardsLeftCount = _handsCards.length;
@@ -20,9 +22,72 @@ function drawCard(){
 	_tableCards.push(cardToPlaceOnTable);
 }
 
+function placeCard(data){
+	var position;
+	if(data.left >= -200 && data.left <= -100){
+		position = 1;
+	}else if(data.left >= -500 && data.left <= -375){
+		position = 3;
+	}else{
+		//Invalid position
+		return;
+	}
+	var card = {
+		suit: data.suit,
+		number: data.number,
+		stacks: data.stacks
+	};
+
+	var cards = _tableCards;
+	var cardIndex = _.findIndex(cards, card);
+	var targetCard = cards[cardIndex - position];
+	debugger;
+	if(card.number === targetCard.number || card.suit === targetCard.suit){
+		if(position === 3){
+			var targetIndex = _.findIndex(cards, targetCard);
+			cards[cardIndex].stacks = targetCard.stacks + card.stacks + 1;
+			card.stacks = targetCard.stacks + card.stacks + 1
+			_.pull(cards, targetCard);
+			cards.move(cardIndex - 1, targetIndex);
+			_tableCards = cards;
+			_consecutiveCardMoves++;
+		}else{
+			cards[cardIndex].stacks = targetCard.stacks + card.stacks + 1;
+			card.stacks = targetCard.stacks + card.stacks + 1;
+			_.pull(cards, targetCard);
+			_tableCards = cards;
+			_consecutiveCardMoves++;
+		}
+
+		//Avoid moving around after placing card
+		var tableWidth = document.querySelector('.table').scrollWidth;
+		var boardWidth = document.querySelector('.table-cards').scrollWidth;
+		var cardListWidth = document.querySelector('.table-cards .card-list').scrollWidth;
+		var cardsCombinedWidth = cards.length * 150;
+		if(boardWidth > tableWidth && _consecutiveCardMoves === 1 && cardListWidth < cardsCombinedWidth ){
+			document.querySelector(".table-cards .card-list").style.minWidth = boardWidth + 150 + "px";
+			document.querySelector(".table-cards").scrollLeft = 10000;
+		}
+		if((cardListWidth - 150)  === cardsCombinedWidth){
+			document.querySelector('.table-cards .card-list').style.minWidth = 0;
+		}
+
+		// return {
+		// 	suit: card.suit,
+		// 	number: card.number,
+		// 	canBePlaced: true,
+		// 	stacks: card.stacks
+		// };
+	}
+}
+
 var CardStore = assign({}, EventEmitter.prototype, {
 	getCardsLeftCount: function(){
 		return _cardsLeftCount;
+	},
+
+	getCardStackCount: function(){
+		return _tableCards.length;
 	},
 
 	getTableCards: function(){
@@ -54,7 +119,6 @@ var CardStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function(payload) {
 	var action = payload.action;
-	var val;
 
 	switch(action.actionType) {
 		case CardConstants.DRAW_CARD:
@@ -63,12 +127,11 @@ AppDispatcher.register(function(payload) {
 			CardStore.emitChange();
 			break;
 
-		// case TodoConstants.TODO_DESTROY:
-		// destroy(action.id);
-		// TodoStore.emitChange();
-		// break;
-
-		// add more cases for other actionTypes, like TODO_UPDATE, etc.
+		case CardConstants.PLACE_CARD:
+			console.log(action);
+			placeCard(action.data);
+			CardStore.emitChange();
+			break;
 	}
 
 	return true; // No errors. Needed by promise in Dispatcher.

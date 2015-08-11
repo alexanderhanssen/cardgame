@@ -6,6 +6,12 @@ var CardActions = {
 		AppDispatcher.handleViewAction({
 			actionType: CardConstants.DRAW_CARD
 		})
+	},
+	placeCard: function(data){
+		AppDispatcher.handleViewAction({
+			actionType: CardConstants.PLACE_CARD,
+			data: data
+		})
 	}
 };
 

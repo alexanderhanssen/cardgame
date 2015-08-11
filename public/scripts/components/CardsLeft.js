@@ -1,20 +1,17 @@
 var CardStore = require('../CardStore');
 var CardActions = require('../CardActions');
 
-function getAppState(){
+function getComponentState(){
 	return {
-		cardsLeft: CardStore.getCardsLeftCount()
+		cardsLeft: CardStore.getCardsLeftCount(),
+    cardStacks: CardStore.getCardStackCount()
 	};
 }
 
 var CardsLeft = React.createClass({
-  handleClick: function(){
-  	console.log("click?!");
-  	CardActions.updateCardsLeft(51);
-  },
   // Use getAppState method to set initial state
   getInitialState: function() {
-    return getAppState();
+    return getComponentState();
   },
   
   // Listen for changes
@@ -30,13 +27,16 @@ var CardsLeft = React.createClass({
 
   render: function() {
     return (
-      <div onClick={this.handleClick}>{this.state.cardsLeft}</div>
+      <div>
+        <div className="cards-count">{this.state.cardsLeft}</div>
+        <div>Total stacks: {this.state.cardStacks}</div>
+      </div>
     );
   },
   
   // Update view state when change event is received
   _onChange: function() {
-    this.setState(getAppState());
+    this.setState(getComponentState());
   }
 
 });

@@ -3,6 +3,8 @@ var DrawCard = require('./DrawCard.js');
 var _cards = require('./Cards.js');
 var TableCard = _cards.TableCard;
 var ReactCSSTransitionGroup = React.addons.ReactCSSTransitionGroup;
+var CardStore = require('../CardStore');
+var CardActions = require('../CardActions');
 
 Array.prototype.move = function (old_index, new_index) {
     if (new_index >= this.length) {
@@ -26,33 +28,24 @@ Array.prototype.move = function (old_index, new_index) {
 // 		);
 // 	}
 // });
+function getComponentState(){
+	return {
+		cards: CardStore.getTableCards()
+	}
+}
 
 var TableCardList = React.createClass({
 	handleReleaseCard: function(left, suit, number, stacks){
-		var cards = this.state.cards;
-		var card = {
-			suit: suit,
-			number: number,
-			stacks: stacks
-		};
-		var numberOfCards = cards.length;
-		if(left >= -200 && left <= -100){
-			return this.canCardBePlacedAtPosition(card, 2, stacks);
-		}
-		if(left >= -500 && left <= -375){
-			return this.canCardBePlacedAtPosition(card, 4, stacks);
-		}
-		return {
-			suit: suit,
-			number: number,
-			canBePlaced: false,
-			stacks: stacks
-		};
+		var data = {
+    		left: left,
+    		suit: suit,
+    		number: number,
+    		stacks: stacks
+    	};
+    	CardActions.placeCard(data);
 	},
-	canCardBePlacedAtPosition: function(card, position, stacks){
+	canCardBePlacedAtPosition: function(card, position){
 		var cards = this.state.cards;
-		var numberOfCards = cards.length;
-		if(cards.length < numberOfCards) return false;
 		var cardIndex = _.findIndex(cards, card);
 		var targetCard;
 		if(position === 2){
@@ -110,31 +103,15 @@ var TableCardList = React.createClass({
 			stacks: card.stacks
 		};
 	},
-	handleDrawCard: function(){
-		this.props.onDrawCard();
-		this.setState({
-			consecutiveCardMoves: 0
-		});
-		console.log("wat");
-	},
 	getInitialState: function() {
-    	return {cards: [], shouldSetMinWidth : true};
+    	return getComponentState();
   	},
-  	componentWillReceiveProps: function(nextProps) {
-  		var cards = this.state.cards;
-  		var card = nextProps.data[nextProps.data.length - 1];
-  		cards.push(card);
-  		this.setState({
-  			cards: cards
-  		});
-  	},
+  	
   	componentDidMount: function() {
-  		var cards = this.state.cards;
-  		cards.push({suit: this.props.data[0].suit, number: this.props.data[0].number, stacks: this.props.data[0].stacks});
-  		this.setState({
-  			cards: cards
-  		});
-  		console.log("card?!");
+  		CardStore.addChangeListener(this._onChange);
+  	},
+  	componentWillUnmount: function() {
+		CardStore.removeChangeListener(this._onChange);
   	},
 	render: function(){
 		var cards = this.props.data;
@@ -144,18 +121,17 @@ var TableCardList = React.createClass({
 				<TableCard suit={card.suit} number={card.number} key={index} onDrop={this.handleReleaseCard} stacks={card.stacks} />
 			);
 		}.bind(this));
-		var numberOfCards = cardsNotBelowOtherCards.length;
-
 		return (
 			<div className="table-cards">
-				<div className="card-stacks">Total stacks of cards: {numberOfCards} </div>
 				<div className="card-list">
 			          {cardNodes}
 				</div>
-				<DrawCard cardsDrawn={cards.length} onDrawCard={this.handleDrawCard} />
 			</div>
 		);
+	},
+	_onChange: function(){
+		this.setState(getComponentState());
 	}
 });
 
-module.exports.TableCardList = TableCardList;
+module.exports = TableCardList;

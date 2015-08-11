@@ -15,13 +15,8 @@ var TableCard = React.createClass({
 			top: 0,
 		};
 	},
-
     onStop: function(event, ui) {
-    	var leftPos = ui.position.left;
-    	var evaluatedCard = this.props.onDrop(leftPos, this.props.suit, this.props.number, this.props.stacks);
-    	if(!evaluatedCard.canBePlaced){
-      		this.setState({left: 0, top: 0});
-    	}
+    	this.props.onDrop(ui.position.left, this.props.suit, this.props.number, this.props.stacks);
     },
     getSuitIcon: function(){
 		var suitIcon;
