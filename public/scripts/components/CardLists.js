@@ -15,17 +15,17 @@ Array.prototype.move = function (old_index, new_index) {
     return this; // for testing purposes
 };
 
-var CardList = React.createClass({
-	render: function() {
-		var numberOfCards = this.props.data.length;
+// var CardList = React.createClass({
+// 	render: function() {
+// 		var numberOfCards = this.props.data.length;
 		
-		return (
-			<div className="hands-cards">
-				<div>{numberOfCards}</div>
-			</div>
-		);
-	}
-});
+// 		return (
+// 			<div className="hands-cards">
+// 				<div>{numberOfCards} console</div>
+// 			</div>
+// 		);
+// 	}
+// });
 
 var TableCardList = React.createClass({
 	handleReleaseCard: function(left, suit, number, stacks){
@@ -115,6 +115,7 @@ var TableCardList = React.createClass({
 		this.setState({
 			consecutiveCardMoves: 0
 		});
+		console.log("wat");
 	},
 	getInitialState: function() {
     	return {cards: [], shouldSetMinWidth : true};
@@ -133,6 +134,7 @@ var TableCardList = React.createClass({
   		this.setState({
   			cards: cards
   		});
+  		console.log("card?!");
   	},
 	render: function(){
 		var cards = this.props.data;
@@ -156,5 +158,4 @@ var TableCardList = React.createClass({
 	}
 });
 
-module.exports.CardList = CardList;
 module.exports.TableCardList = TableCardList;

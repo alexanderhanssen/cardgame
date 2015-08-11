@@ -2,10 +2,9 @@ var AppDispatcher = require('./AppDispatcher');
 var CardConstants = require('./CardConstants');
 
 var CardActions = {
-	updateCardsLeft: function(val){
+	drawCard: function(){
 		AppDispatcher.handleViewAction({
-			actionType: CardConstants.UPDATE_CARDS_LEFT,
-			val: val
+			actionType: CardConstants.DRAW_CARD
 		})
 	}
 };

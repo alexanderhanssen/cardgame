@@ -1,19 +1,36 @@
 var AppDispatcher = require('./AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
+var _ = require('lodash');
 var CardConstants = require('./CardConstants');
+var allCards = require('./allCards');
 
 var CHANGE_EVENT = 'change';
 
 var _cardsLeftCount = 52;
+var _tableCards = [];
+var _handsCards = _.shuffle(allCards.getAll());
 
-function update(val){
-	_cardsLeftCount = val;
+function cardsLeft(){
+	_cardsLeftCount = _handsCards.length;
+}
+
+function drawCard(){
+	var cardToPlaceOnTable = _handsCards.shift();
+	_tableCards.push(cardToPlaceOnTable);
 }
 
 var CardStore = assign({}, EventEmitter.prototype, {
 	getCardsLeftCount: function(){
 		return _cardsLeftCount;
+	},
+
+	getTableCards: function(){
+		return _tableCards;
+	},
+
+	getHandsCards: function(){
+		return _handsCards;
 	},
 
 	emitChange: function(){
@@ -40,9 +57,9 @@ AppDispatcher.register(function(payload) {
 	var val;
 
 	switch(action.actionType) {
-		case CardConstants.UPDATE_CARDS_LEFT:
-			val = action.val;
-			update(val);
+		case CardConstants.DRAW_CARD:
+			drawCard();
+			cardsLeft();
 			CardStore.emitChange();
 			break;
 

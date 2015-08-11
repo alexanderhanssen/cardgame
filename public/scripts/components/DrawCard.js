@@ -1,6 +1,8 @@
+var CardActions = require('../CardActions');
+
 var DrawCard = React.createClass({
 	handleClick: function(e){
-		this.props.onDrawCard();
+		CardActions.drawCard();
 	},
 	
 	render: function() {

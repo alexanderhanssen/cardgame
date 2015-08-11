@@ -19,7 +19,6 @@ var CardsLeft = React.createClass({
   
   // Listen for changes
   componentDidMount: function() {
-  	console.log("Started?");
     CardStore.addChangeListener(this._onChange);
   },
 
@@ -37,7 +36,6 @@ var CardsLeft = React.createClass({
   
   // Update view state when change event is received
   _onChange: function() {
-  	console.log("Changed?");
     this.setState(getAppState());
   }
 

@@ -1,36 +1,29 @@
 var _ = require('lodash');
-var allCards = require('../allCards.js');
-var CardLists = require('./CardLists.js');
+var allCards = require('../allCards');
+var CardLists = require('./CardLists');
 var CardList = CardLists.CardList;
 var TableCardList = CardLists.TableCardList;
-var DrawCard = require('./DrawCard.js');
-var CardStore = require('../CardStore.js');
+var DrawCard = require('./DrawCard');
+var CardStore = require('../CardStore');
+var CardActions = require('../CardActions');
+
+function getAppState(){
+	return {
+		handsCards: CardStore.getHandsCards(),
+		tableCards: CardStore.getTableCards(),
+	};
+}
 
 var Table = React.createClass({
-	fetchCards: function(){
-		this.setState({
-			handCards: _.shuffle(allCards.getAll()),
-			//handCards: allCards.getAll(),
-			tableCards: []
-		});
-	},
-	handleDrawCard: function() {
-		var cardToPlaceOnTable = this.state.handCards.shift();
-		var handCards = this.state.handCards;  
-		var tableCards = this.state.tableCards;
-		tableCards.push(cardToPlaceOnTable);
-		var drawnCards = this.state.drawnCards;
-		drawnCards++;
-		this.setState({ handCards: handCards, tableCards: tableCards, drawnCards: drawnCards});
-	},
-
 	componentDidMount: function() {
-	    this.fetchCards();
+  		console.log("Started?");
+	    CardStore.addChangeListener(this._onChange);
   	},
   	getInitialState: function() {
-    	return {handCards: [], tableCards : [], drawnCards: 0};
+    	return getAppState();
   	},
   	componentDidUpdate: function(prevProps, prevState){
+  		console.log("table compo updated");
   		var tableCards = document.querySelector('.table-cards');
   		if(tableCards){
   			var cardListWidth = document.querySelector('.table-cards .card-list').scrollWidth;
@@ -45,17 +38,18 @@ var Table = React.createClass({
   			return (
 	  			<div className="table">
 	  				<TableCardList data={this.state.tableCards} onDrawCard={this.handleDrawCard}/>
-	  				<CardList data={this.state.handCards} />
 	  			</div>
 			);
   		}else{
 			return (
 	  			<div className="table">
 	  				<DrawCard onDrawCard={this.handleDrawCard} />
-	  				<CardList data={this.state.handCards} />
 	  			</div>
 			);
   		}
+  	},
+  	_onChange: function() {
+    	this.setState(getAppState());
   	}
 });
 
