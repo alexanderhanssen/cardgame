@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "Some sort of card game",
   "main": "server.js",
+  "scripts" : {
+    "start" : "gulp build && gulp styles && node server.js"
+  },
   "dependencies": {
     "body-parser": "^1.4.3",
     "browserify": "^11.0.1",
