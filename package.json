@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "description": "Some sort of card game",
   "main": "server.js",
-  "scripts" : {
-    "start" : "node server.js",
-    "postinstall" : "gulp bundle-js-css"
+  "scripts": {
+    "build" : "gulp bundle-js-css",
+    "start": "node server.js"
   },
   "dependencies": {
+    "babelify": "^6.1.3",
     "body-parser": "^1.4.3",
     "browserify": "^11.0.1",
     "events": "^1.0.2",
@@ -26,13 +27,7 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.3.1"
   },
-  "devDependencies": {
-    "babelify": "^6.1.3"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
+  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/alexanderhanssen/cardgame.git"
