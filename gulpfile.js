@@ -40,7 +40,7 @@ gulp.task('watch', function () {
 gulp.task('build', function(){
     var bundle = browserify({
         entries: ['./public/scripts/main.js'],
-        debug: true
+        debug: false
     });
     bundle.transform(babelify);
        
