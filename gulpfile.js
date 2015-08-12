@@ -66,3 +66,5 @@ gulp.task('default', function(){
     })
 });
 
+gulp.task('bundle-js-css', ['build', 'styles']);
+

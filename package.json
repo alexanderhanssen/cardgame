@@ -4,7 +4,8 @@
   "description": "Some sort of card game",
   "main": "server.js",
   "scripts" : {
-    "start" : "gulp build && gulp styles && node server.js"
+    "start" : "node server.js",
+    "postinstall" : "gulp bundle-js-css"
   },
   "dependencies": {
     "body-parser": "^1.4.3",
