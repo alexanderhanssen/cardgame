@@ -20,6 +20,7 @@ function cardsLeft(){
 function drawCard(){
 	var cardToPlaceOnTable = _handsCards.shift();
 	_tableCards.push(cardToPlaceOnTable);
+	_consecutiveCardMoves = 0;
 }
 
 function placeCard(data){
@@ -29,7 +30,7 @@ function placeCard(data){
 	}else if(data.left >= -500 && data.left <= -375){
 		position = 3;
 	}else{
-		//Invalid position
+		//Invalid position, still triggers change and puts card back into original position
 		return;
 	}
 	var card = {
@@ -41,7 +42,6 @@ function placeCard(data){
 	var cards = _tableCards;
 	var cardIndex = _.findIndex(cards, card);
 	var targetCard = cards[cardIndex - position];
-	debugger;
 	if(card.number === targetCard.number || card.suit === targetCard.suit){
 		if(position === 3){
 			var targetIndex = _.findIndex(cards, targetCard);
@@ -58,26 +58,6 @@ function placeCard(data){
 			_tableCards = cards;
 			_consecutiveCardMoves++;
 		}
-
-		//Avoid moving around after placing card
-		var tableWidth = document.querySelector('.table').scrollWidth;
-		var boardWidth = document.querySelector('.table-cards').scrollWidth;
-		var cardListWidth = document.querySelector('.table-cards .card-list').scrollWidth;
-		var cardsCombinedWidth = cards.length * 150;
-		if(boardWidth > tableWidth && _consecutiveCardMoves === 1 && cardListWidth < cardsCombinedWidth ){
-			document.querySelector(".table-cards .card-list").style.minWidth = boardWidth + 150 + "px";
-			document.querySelector(".table-cards").scrollLeft = 10000;
-		}
-		if((cardListWidth - 150)  === cardsCombinedWidth){
-			document.querySelector('.table-cards .card-list').style.minWidth = 0;
-		}
-
-		// return {
-		// 	suit: card.suit,
-		// 	number: card.number,
-		// 	canBePlaced: true,
-		// 	stacks: card.stacks
-		// };
 	}
 }
 
@@ -97,7 +77,9 @@ var CardStore = assign({}, EventEmitter.prototype, {
 	getHandsCards: function(){
 		return _handsCards;
 	},
-
+	getConsecutiveCardMoves: function(){
+		return _consecutiveCardMoves;
+	},
 	emitChange: function(){
 		this.emit(CHANGE_EVENT);
 	},
@@ -128,7 +110,6 @@ AppDispatcher.register(function(payload) {
 			break;
 
 		case CardConstants.PLACE_CARD:
-			console.log(action);
 			placeCard(action.data);
 			CardStore.emitChange();
 			break;

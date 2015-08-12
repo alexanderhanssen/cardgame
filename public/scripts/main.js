@@ -1,9 +1,7 @@
 var React = require('react/addons');
 window.React = React;
 var Table = require('./components/Table');
-var CardsLeft = require('./components/CardsLeft');
 var DrawCard = require('./components/DrawCard');
-var CardActions = require('./CardActions');
 
 var Game = React.createClass({
 	render: function() {
@@ -11,7 +9,6 @@ var Game = React.createClass({
 			<div className="game">
 				<Table/>
 				<DrawCard/>
-				<CardsLeft/>
 			</div>
 		);
 	}

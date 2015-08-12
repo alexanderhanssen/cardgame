@@ -16,25 +16,15 @@ var Table = React.createClass({
   	getInitialState: function() {
     	return getAppState();
   	},
-  	componentDidUpdate: function(prevProps, prevState){
-  		// var tableCards = document.querySelector('.table-cards');
-  		// if(tableCards){
-    //     var cardListWidth = document.querySelector('.table-cards .card-list').scrollWidth;
-		  //   var cardsCombinedWidth = document.querySelectorAll('.table-card').length * 150;
-			 //  if(cardsCombinedWidth >= cardListWidth){
-  		// 		  tableCards.scrollLeft = 10000;
-			 //   }
-  		// }
-  	},
   	render: function() {
   		if(this.state.tableCards.length){
 			   return (
 	  			<div className="table">
-	  				<TableCardList data={this.state.tableCards} onDrawCard={this.handleDrawCard}/>
+	  				<TableCardList data={this.state.tableCards}/>
 	  			</div>
 			   );
       }
-      return null;
+      return ( <div className="table"></div>);
   	},
   	_onChange: function() {
     	this.setState(getAppState());

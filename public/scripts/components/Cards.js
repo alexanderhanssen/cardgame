@@ -9,12 +9,6 @@ var CardStack = React.createClass({
 })
 
 var TableCard = React.createClass({
-	getInitialState: function() {
-		return {
-			left: 0,
-			top: 0,
-		};
-	},
     onStop: function(event, ui) {
     	this.props.onDrop(ui.position.left, this.props.suit, this.props.number, this.props.stacks);
     },
@@ -82,10 +76,9 @@ var TableCard = React.createClass({
 		return (
 			<Draggable
                 zIndex={100}
-                start={{x: this.state.left, y: this.state.top}}
+                start={{x: 0, y: 0}}
                 moveOnStartChange={true}
                 bounds={{left: -600, right: 0}}
-                axis="x"
                 {...drags}>
                 <span className={style}>
 					<div>

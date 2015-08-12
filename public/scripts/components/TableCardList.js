@@ -1,10 +1,11 @@
 var _ = require('lodash');
-var DrawCard = require('./DrawCard.js');
-var _cards = require('./Cards.js');
+var DrawCard = require('./DrawCard');
+var _cards = require('./Cards');
 var TableCard = _cards.TableCard;
-var ReactCSSTransitionGroup = React.addons.ReactCSSTransitionGroup;
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 var CardStore = require('../CardStore');
 var CardActions = require('../CardActions');
+var scroll = require('scroll');
 
 Array.prototype.move = function (old_index, new_index) {
     if (new_index >= this.length) {
@@ -17,20 +18,10 @@ Array.prototype.move = function (old_index, new_index) {
     return this; // for testing purposes
 };
 
-// var CardList = React.createClass({
-// 	render: function() {
-// 		var numberOfCards = this.props.data.length;
-		
-// 		return (
-// 			<div className="hands-cards">
-// 				<div>{numberOfCards} console</div>
-// 			</div>
-// 		);
-// 	}
-// });
 function getComponentState(){
 	return {
-		cards: CardStore.getTableCards()
+		cards: CardStore.getTableCards(),
+		consecutiveCardMoves: CardStore.getConsecutiveCardMoves()
 	}
 }
 
@@ -44,74 +35,24 @@ var TableCardList = React.createClass({
     	};
     	CardActions.placeCard(data);
 	},
-	canCardBePlacedAtPosition: function(card, position){
-		var cards = this.state.cards;
-		var cardIndex = _.findIndex(cards, card);
-		var targetCard;
-		if(position === 2){
-			targetCard = cards[cardIndex -1];
-		}
-		if(position === 4){
-			targetCard = cards[cardIndex - 3];
-		}
-		if(card.number === targetCard.number || card.suit === targetCard.suit){
-			var consecutiveCardMoves = this.state.consecutiveCardMoves;
-			if(position === 4){
-				var targetIndex = _.findIndex(cards, targetCard);
-				cards[cardIndex].stacks = targetCard.stacks + card.stacks + 1;
-				card.stacks = targetCard.stacks + card.stacks + 1
-				_.pull(cards, targetCard);
-				cards.move(cardIndex - 1, targetIndex);
-				this.setState({
-					cards: cards,
-					consecutiveCardMoves: ++consecutiveCardMoves
-				});
-			}else{
-				cards[cardIndex].stacks = targetCard.stacks + card.stacks + 1;
-				card.stacks = targetCard.stacks + card.stacks + 1;
-				_.pull(cards, targetCard);
-				this.setState({
-					cards: cards,
-					consecutiveCardMoves: ++consecutiveCardMoves
-				});
-			}
-
-			//Avoid moving around after placing card
-			var tableWidth = document.querySelector('.table').scrollWidth;
-			var boardWidth = document.querySelector('.table-cards').scrollWidth;
-			var cardListWidth = document.querySelector('.table-cards .card-list').scrollWidth;
-			var cardsCombinedWidth = numberOfCards * 150;
-  			if(boardWidth > tableWidth && this.state.consecutiveCardMoves === 1 && cardListWidth < cardsCombinedWidth ){
-  				document.querySelector(".table-cards .card-list").style.minWidth = boardWidth + 150 + "px";
-  				document.querySelector(".table-cards").scrollLeft = 10000;
-  			}
-  			if((cardListWidth - 150)  === cardsCombinedWidth){
-  				document.querySelector('.table-cards .card-list').style.minWidth = 0;
-  			}
-
-			return {
-				suit: card.suit,
-				number: card.number,
-				canBePlaced: true,
-				stacks: card.stacks
-			};
-		}
-		return {
-			suit: card.suit,
-			number: card.number,
-			canBePlaced: false,
-			stacks: card.stacks
-		};
-	},
 	getInitialState: function() {
     	return getComponentState();
   	},
-  	
   	componentDidMount: function() {
   		CardStore.addChangeListener(this._onChange);
   	},
   	componentWillUnmount: function() {
 		CardStore.removeChangeListener(this._onChange);
+  	},
+  	componentDidUpdate: function(nextProps, prevState){
+		var tableEl = document.querySelector(".table-cards");
+		var cardListEl = document.querySelector(".card-list");
+      	if(tableEl){
+      		if(cardListEl.scrollWidth > tableEl.offsetWidth && this.state.consecutiveCardMoves === 0){
+        		scroll.left(tableEl, 10000, { duration: 9000, ease: 'linear'});
+      		}
+      		cardListEl.style.minWidth = this.state.cards.length * 150 + "px";
+      	}
   	},
 	render: function(){
 		var cards = this.props.data;
@@ -124,7 +65,7 @@ var TableCardList = React.createClass({
 		return (
 			<div className="table-cards">
 				<div className="card-list">
-			          {cardNodes}
+	          		{cardNodes}
 				</div>
 			</div>
 		);

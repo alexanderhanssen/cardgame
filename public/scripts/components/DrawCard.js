@@ -1,5 +1,7 @@
 var CardActions = require('../CardActions');
 var CardStore = require('../CardStore');
+var CardsLeft = require('./CardsLeft');
+var Rules = require('./Rules');
 
 function getComponentState(){
 	return {
@@ -24,14 +26,13 @@ var DrawCard = React.createClass({
 		var className = "cards drawn-" + (52 - this.state.cardsLeft);
 		return (
             <div className="draw-card">
-				<button onClick={this.handleClick}>
-					<div className={className}>
-						<div></div>
-						<div></div>
-						<div></div>
-					</div>
-					
-				</button> 
+				<div onClick={this.handleClick} className={className}>
+					<div></div>
+					<div></div>
+					<div></div>
+				</div>
+				<CardsLeft/>
+				<Rules/>
 			</div>
 		)
 	},

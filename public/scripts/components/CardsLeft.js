@@ -27,9 +27,9 @@ var CardsLeft = React.createClass({
 
   render: function() {
     return (
-      <div>
-        <div className="cards-count">{this.state.cardsLeft}</div>
-        <div>Total stacks: {this.state.cardStacks}</div>
+      <div className="card-counter">
+        <div className="cards-left">{this.state.cardsLeft}</div>
+        <div className="total-stacks">Total stacks: {this.state.cardStacks}</div>
       </div>
     );
   },
