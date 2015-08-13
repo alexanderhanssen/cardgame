@@ -6,6 +6,8 @@ var concat = require('gulp-concat');
 var babelify = require('babelify');
 var less = require('gulp-less');
 var minifyCSS = require('gulp-minify-css');
+var postcss      = require('gulp-postcss');
+var autoprefixer = require('autoprefixer-core');
 
 gulp.task('watch', function () {
   var watcher = watchify(
@@ -52,6 +54,7 @@ gulp.task('build', function(){
 gulp.task('styles', function () {
     return gulp.src('public/style/cards.less')
     .pipe(less())
+    .pipe(postcss([ autoprefixer({ browsers: ['last 2 versions'] }) ]))
     .pipe(minifyCSS())
     .pipe(gulp.dest('public/build/'));
 });
