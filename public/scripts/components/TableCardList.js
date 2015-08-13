@@ -49,9 +49,10 @@ var TableCardList = React.createClass({
 		var cardListEl = document.querySelector(".card-list");
       	if(tableEl){
       		if(cardListEl.scrollWidth > tableEl.offsetWidth && this.state.consecutiveCardMoves === 0){
-        		scroll.left(tableEl, 10000, { duration: 9000, ease: 'linear'});
+        		scroll.left(tableEl, cardListEl.scrollWidth + 150, { duration: 1500, ease: 'linear'});
       		}
       		cardListEl.style.minWidth = this.state.cards.length * 150 + "px";
+      		cardListEl.style.right = 0;
       	}
   	},
 	render: function(){

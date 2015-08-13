@@ -110,12 +110,12 @@ html, body, #content, .game, .table-cards{
 }
 .card-list{
   display: inline-block;
-  margin: 10% auto;
   min-width: 150px;
   transition: all .5s ease-in;
   background-color: white;
   height: 200px;
-  margin: auto;
+  margin-top: auto;
+  margin-bottom: auto;
   position: absolute;
   top: 0; bottom: 0; left: 0; right: 0;
 }
@@ -203,12 +203,21 @@ html, body, #content, .game, .table-cards{
   margin-left: -180px;
   max-width: 300px;
   transition: .5s all ease-in;
-  &.open{
-      
+
+  &.closed:hover{
+    .triangle{
+      left: -25px;
+    }
   }
   &.open{
     left: 0;
     margin-left: 0;
+
+    &:hover{
+      .triangle{
+        left: -5px;
+      }
+    }
     .text{
       opacity: 1;
     }
