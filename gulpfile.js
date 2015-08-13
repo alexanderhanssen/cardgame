@@ -6,7 +6,7 @@ var concat = require('gulp-concat');
 var babelify = require('babelify');
 var less = require('gulp-less');
 var minifyCSS = require('gulp-minify-css');
- 
+
 gulp.task('watch', function () {
   var watcher = watchify(
     browserify({

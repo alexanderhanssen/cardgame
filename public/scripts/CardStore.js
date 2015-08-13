@@ -42,6 +42,7 @@ function placeCard(data){
 	var cards = _tableCards;
 	var cardIndex = _.findIndex(cards, card);
 	var targetCard = cards[cardIndex - position];
+	if(!targetCard) return;
 	if(card.number === targetCard.number || card.suit === targetCard.suit){
 		if(position === 3){
 			var targetIndex = _.findIndex(cards, targetCard);

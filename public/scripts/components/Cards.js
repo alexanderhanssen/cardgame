@@ -1,4 +1,6 @@
 var Draggable = require('react-draggable');
+var CardStore = require('../CardStore');
+var ReactAnimate = React.addons.CSSTransitionGroup;
 
 var CardStack = React.createClass({
 	render: function() {
@@ -54,9 +56,22 @@ var TableCard = React.createClass({
 		}
 		return numberIcon;
     },
-    
+    componentDidMount: function(){
+    	//Hack to make the component re-render after animation is done
+    	var that = this;
+    	setTimeout(function(){
+    		that.setState({
+    			mounted: true
+    		});
+    	}, 600);
+    },
+    getInitialState: function(){
+    	return {
+    		mounted: false
+    	};
+    },
 	render: function() {
-		var drags = {onStop: this.onStop};
+		var drags = {onStop: this.onStop, onDrag: this.onDrag, onStart: this.onStart};
 		var style = 'table-card box ' + this.props.suit + " " + this.props.number;
 		var stacks = [];
 		for(var i = 0; i < this.props.stacks; i++){
@@ -71,6 +86,30 @@ var TableCard = React.createClass({
 			stackStyle = {
 				bottom: "0px"
 			};
+		}
+		
+		if(CardStore.getConsecutiveCardMoves() === 0 && this.props.index + 1 === CardStore.getCardStackCount() && !this.state.mounted){
+			return (
+				<Draggable
+	                zIndex={100}
+	                start={{x: 0, y: 0}}
+	                moveOnStartChange={true}
+	                bounds={{left: -600, right: 0}}
+	                {...drags}>
+	                <span>
+					<ReactAnimate transitionName="example" transitionAppear={true} component="div" className="flip-container">
+		                <span className={style}>
+			                <div className="flipper"> 
+		                		<div className="front">
+									<h1>{this.getNumberIcon()} {this.getSuitIcon()}</h1>
+								</div>
+								<div className="back"></div>
+			                </div>
+		                </span>
+		            </ReactAnimate>
+		            </span>
+	            </Draggable>
+			)
 		}
 		
 		return (

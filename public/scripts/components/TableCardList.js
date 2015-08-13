@@ -59,7 +59,7 @@ var TableCardList = React.createClass({
 		var cardsNotBelowOtherCards = _.without(this.state.cards, cards);
 		var cardNodes = cardsNotBelowOtherCards.map(function(card, index){
 			return (
-				<TableCard suit={card.suit} number={card.number} key={index} onDrop={this.handleReleaseCard} stacks={card.stacks} />
+				<TableCard suit={card.suit} number={card.number} key={index} index={index} onDrop={this.handleReleaseCard} stacks={card.stacks} />
 			);
 		}.bind(this));
 		return (
