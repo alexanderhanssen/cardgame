@@ -12,7 +12,17 @@ var CardStack = React.createClass({
 
 var TableCard = React.createClass({
     onStop: function(event, ui) {
+    	ui.node.style.boxShadow = "0 0";
     	this.props.onDrop(ui.position.left, this.props.suit, this.props.number, this.props.stacks);
+    },
+    onDrag: function(event, ui){
+    	var topPos = ui.position.top;
+    	if(topPos < 0){
+    		var val = Math.abs(topPos);
+    		ui.node.style.boxShadow = "0 " + val + "px rgba(0, 0, 0, 0.1)";
+    	}else{
+    		ui.node.style.boxShadow = "0 0";
+    	}
     },
     getSuitIcon: function(){
 		var suitIcon;
@@ -71,7 +81,7 @@ var TableCard = React.createClass({
     	};
     },
 	render: function() {
-		var drags = {onStop: this.onStop, onDrag: this.onDrag, onStart: this.onStart};
+		var drags = {onStop: this.onStop, onDrag: this.onDrag};
 		var style = 'table-card box ' + this.props.suit + " " + this.props.number;
 		var stacks = [];
 		for(var i = 0; i < this.props.stacks; i++){
