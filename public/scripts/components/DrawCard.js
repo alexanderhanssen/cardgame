@@ -2,7 +2,7 @@ var CardActions = require('../CardActions');
 var CardStore = require('../CardStore');
 var CardsLeft = require('./CardsLeft');
 var Rules = require('./Rules');
-var Lang = require('./Language');
+var Language = require('./Language');
 
 function getComponentState(){
 	return {
@@ -34,7 +34,7 @@ var DrawCard = React.createClass({
 				</div>
 				<CardsLeft/>
 				<Rules/>
-				<Lang/>
+				<Language/>
 			</div>
 		)
 	},
