@@ -12,7 +12,14 @@ var CardActions = {
 			actionType: CardConstants.PLACE_CARD,
 			data: data
 		})
+	},
+	changeLang: function(lang){
+		AppDispatcher.handleViewAction({
+			actionType: CardConstants.CHANGE_LANG,
+			lang: lang
+		})
 	}
+
 };
 
 module.exports = CardActions;

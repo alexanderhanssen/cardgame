@@ -5,10 +5,10 @@ font-weight: 200;
 margin: 0 50px;
 }
 
-h2{
+h3{
   margin-top: 0;
 }
-html, body, #content, .game{
+html, body, #content, .game, .table-cards{
   height: 100%;
 }
 
@@ -106,6 +106,7 @@ html, body, #content, .game{
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
+  position: relative;
 }
 .card-list{
   display: inline-block;
@@ -113,23 +114,29 @@ html, body, #content, .game{
   min-width: 150px;
   transition: all .5s ease-in;
   background-color: white;
+  height: 200px;
+  margin: auto;
+  position: absolute;
+  top: 0; bottom: 0; left: 0; right: 0;
 }
 .table{
-  height: 60%;
+  height: 70%;
 }
 .draw-card{
-  text-align: center;
-  height: 180px;
+  box-sizing: border-box;
+  height: 30%;
   position: relative;
+  padding: 30px 0;
   .cards{
     box-sizing: border-box;
     position: absolute;
     left: 50%;
     padding: 0px 0px;
     margin-left: -50px;
-    top: 0;
+    top: 30px;
     width: 130px;
     height: 1px;
+    z-index: 3;
   }
   button{
     width: 100%;
@@ -166,20 +173,74 @@ html, body, #content, .game{
     position: absolute;
     left: 50%;
     margin-left: 130px;
-    top: 40%;
 }
 
 .rules{
-  h2{
+  z-index: 1;
+  h3{
     cursor: pointer;
+    transition: 1s all ease-in;
+    position: relative;
+  }
+  .triangle{
+    position: absolute;
+    content: "";
+    left: -15px;
+    top: 3px;
+    border-right: 8px solid black;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    transition: .5s all ease-in;
+    transform: rotate(0deg) translate(0,0) rotate(0deg);
+  }
+
+  .text{
+    opacity: 0;
+    transition: .5s all ease-out;
   }
   position: absolute;
   left: 50%;
-  margin-left: -400px;
+  margin-left: -180px;
   max-width: 300px;
-  text-align: left;
+  transition: .5s all ease-in;
+  &.open{
+      
+  }
+  &.open{
+    left: 0;
+    margin-left: 0;
+    .text{
+      opacity: 1;
+    }
+    .triangle{
+      border-left: 8px solid black;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-right: 0;
+      transform: translate(0, -20px) rotate(360deg) translate(80px, 20px) rotate(-360deg);
+    }
+  }
 }
 
+.lang{
+  position: absolute;
+  right: 0;
+  bottom: 80px;
+  div{
+    cursor: pointer;
+  }
+  .no, .en{
+    padding: 5px;
+  }
+}
+
+.lang-en .en{
+  font-weight: bold;
+}
+
+.lang-no .no{
+  font-weight: bold;
+}
 .drawn-50{
   div:nth-child(1){ display: none};
 }

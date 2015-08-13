@@ -4,7 +4,8 @@ var CardActions = require('../CardActions');
 function getComponentState(){
 	return {
 		cardsLeft: CardStore.getCardsLeftCount(),
-    cardStacks: CardStore.getCardStackCount()
+    cardStacks: CardStore.getCardStackCount(),
+    lang: CardStore.getLang()
 	};
 }
 
@@ -21,15 +22,16 @@ var CardsLeft = React.createClass({
 
   // Unbind change listener
   componentWillUnmount: function() {
-  	console.log("Gone?!");
     CardStore.removeChangeListener(this._onChange);
   },
 
   render: function() {
+    var cardsLeft = CardStore.getCardsLeftText();
+    var stacks = CardStore.getStacksText();
     return (
       <div className="card-counter">
-        <div className="cards-left">{this.state.cardsLeft}</div>
-        <div className="total-stacks">Total stacks: {this.state.cardStacks}</div>
+        <div className="cards-left">{this.state.cardsLeft} {cardsLeft}</div>
+        <div className="total-stacks"><b>{this.state.cardStacks}</b> {stacks}</div>
       </div>
     );
   },

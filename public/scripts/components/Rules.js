@@ -1,26 +1,48 @@
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+var CardStore = require('../CardStore');
+
+function getComponentState(){
+	return {
+		lang: CardStore.getLang()
+	}
+}
 var Rules = React.createClass({
 	handleClick: function(){
-		var closed = this.state.closed;
-		closed = !closed;
 		this.setState({
-			closed: closed
+			closed: !this.state.closed
 		});
 	},
 	getInitialState: function(){
 		return {
-			closed: true
+			closed: true,
+			lang: "no"
 		};
 	},
+	componentDidMount: function() {
+	    CardStore.addChangeListener(this._onChange);
+  	},
+
+	  // Unbind change listener
+  	componentWillUnmount: function() {
+	    CardStore.removeChangeListener(this._onChange);
+  	},
+
 	render: function(){
-		var icon = this.state.closed ? "+" : "-";
-		var text = this.state.closed ? "" : "Draw a card by pressing the card stack at the bottom. Move a card over another card with the same suit(♠, ♦, ♥, ♣) or same value. You can only move the card one position to the left or three positions to the left. Your goal is to get as few stacks as possible after all cards are drawn."
+		var rulesText = CardStore.getRulesText();
+		var header = rulesText.header;
+		var text = rulesText.text;
+		var className = this.state.closed ? "rules closed" : "rules open";
 		return (
-			<div className="rules">
-				<h2 onClick={this.handleClick}>Rules {icon}</h2>
-				<div>{text}</div>
-			</div>
+				<div className={className}>
+					<h3 onClick={this.handleClick}><span className="triangle"></span>{header}</h3>
+					<div className="text">{text}</div>
+				</div>
 		);
-	}
+	},
+	_onChange: function() {
+    	this.setState(getComponentState());
+  	}
+
 });
 
 module.exports = Rules;

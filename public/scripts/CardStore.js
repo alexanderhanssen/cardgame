@@ -12,6 +12,7 @@ var _tableCards = [];
 var _handsCards = _.shuffle(allCards.getAll());
 //var _handsCards = allCards.getAll();
 var _consecutiveCardMoves = 0;
+var _language = "no";
 
 function cardsLeft(){
 	_cardsLeftCount = _handsCards.length;
@@ -21,6 +22,9 @@ function drawCard(){
 	var cardToPlaceOnTable = _handsCards.shift();
 	_tableCards.push(cardToPlaceOnTable);
 	_consecutiveCardMoves = 0;
+}
+function changeLang(lang){
+	_language = lang;
 }
 
 function placeCard(data){
@@ -81,6 +85,51 @@ var CardStore = assign({}, EventEmitter.prototype, {
 	getConsecutiveCardMoves: function(){
 		return _consecutiveCardMoves;
 	},
+	getLang: function(){
+		return _language;
+	},
+	getRulesText: function(){
+		if(_language === "no"){
+			return {
+				header: "Regler",
+				text: "Flytt ett kort over ett annet med samme kappe(♠, ♦, ♥, ♣) eller samme verdi. Du kan kun flytte kortet en eller tre posisjoner til venstre"
+			}
+		}
+		if(_language === "en"){
+			return {
+				header: "Rules",
+				text: "Move a card over another with the same suit(♠, ♦, ♥, ♣) or same value. You can only move the card one or three positions to the left."
+			}
+		}
+	},
+	getCardsLeftText: function(){
+		if(_language === "no"){
+			return "kort igjen";
+		}
+		if(_language === "en"){
+			if(this.getCardsLeftCount() === 1){
+				return "card left";
+			}else{
+				return "cards left";
+			}
+		}
+	},
+	getStacksText: function(){
+		if(_language === "no"){
+			if(this.getCardStackCount() === 1){
+				return "bunke";
+			}else{
+				return "bunker";
+			}
+		}
+		if(_language === "en"){
+			if(this.getCardStackCount() ===  1){
+				return "stack";
+			}else{
+				return "stacks";
+			}
+		}
+	},
 	emitChange: function(){
 		this.emit(CHANGE_EVENT);
 	},
@@ -112,6 +161,10 @@ AppDispatcher.register(function(payload) {
 
 		case CardConstants.PLACE_CARD:
 			placeCard(action.data);
+			CardStore.emitChange();
+			break;
+		case CardConstants.CHANGE_LANG:
+			changeLang(action.lang);
 			CardStore.emitChange();
 			break;
 	}
