@@ -4,15 +4,21 @@ var assign = require('object-assign');
 var _ = require('lodash');
 var CardConstants = require('./CardConstants');
 var allCards = require('./allCards');
+var xhr = require('superagent');
 
 var CHANGE_EVENT = 'change';
 
-var _cardsLeftCount = 52;
 var _tableCards = [];
 var _handsCards = _.shuffle(allCards.getAll());
+var _cardsLeftCount = _handsCards.length;
 //var _handsCards = allCards.getAll();
 var _consecutiveCardMoves = 0;
 var _language = "no";
+var _highScore = [];
+var _modalIsOpen = false;
+var _scoreFetched = false;
+var _gameOver = false;
+var _hasSubmittedScore = false;
 
 function cardsLeft(){
 	_cardsLeftCount = _handsCards.length;
@@ -64,6 +70,34 @@ function placeCard(data){
 			_consecutiveCardMoves++;
 		}
 	}
+}
+
+function toggleModal(){
+	_modalIsOpen = !_modalIsOpen;
+	var content = document.getElementById('content');
+	if(_modalIsOpen){
+		content.style.opacity = 0;
+	}else{
+		content.style.opacity = 1;
+	}
+}
+
+function submitScore(name){
+	var score = _tableCards.length;
+	var data = {
+		score: score,
+		name: name
+	};
+	xhr.post('/score.json').send(data)
+		.end(function(err, res){
+			if(res.ok){
+				_hasSubmittedScore = true;
+				_scoreFetched = false;
+				CardStore.emitChange();
+			}else{
+				console.log(err);
+			}
+		});
 }
 
 var CardStore = assign({}, EventEmitter.prototype, {
@@ -130,6 +164,33 @@ var CardStore = assign({}, EventEmitter.prototype, {
 			}
 		}
 	},
+	getScore: function(){
+		var that = this;
+		if(!_scoreFetched){
+			xhr.get('/score.json').end(function(err, res) {
+		  		if(err) {
+		          	console.log(err);
+		      	} else {
+		      		_scoreFetched = true;
+		      		var sortedTop15 = _.take(_.sortByOrder(res.body,['score'],['asc']), 15);
+		      		_highScore = sortedTop15;
+		      		that.emitChange();
+		      }
+			});
+		}
+		
+		return _highScore;
+	},
+	isModalOpen: function(){
+		return _modalIsOpen;
+	},
+
+	isGameOver: function(){
+		return _gameOver;
+	},
+	hasSubmittedScore: function(){
+		return _hasSubmittedScore;
+	},
 	emitChange: function(){
 		this.emit(CHANGE_EVENT);
 	},
@@ -165,6 +226,22 @@ AppDispatcher.register(function(payload) {
 			break;
 		case CardConstants.CHANGE_LANG:
 			changeLang(action.lang);
+			CardStore.emitChange();
+			break;
+		case CardConstants.GET_HIGHSCORE:
+			getHighscore();
+			CardStore.emitChange();
+			break;
+		case CardConstants.TOGGLE_MODAL:
+			toggleModal();
+			CardStore.emitChange();
+			break;
+		case CardConstants.GAME_OVER:
+			_gameOver = true;
+			CardStore.emitChange();
+			break;
+		case CardConstants.SUBMIT_SCORE:
+			submitScore(action.data);
 			CardStore.emitChange();
 			break;
 	}

@@ -18,8 +18,23 @@ var CardActions = {
 			actionType: CardConstants.CHANGE_LANG,
 			lang: lang
 		})
+	},
+	toggleModal: function(){
+		AppDispatcher.handleViewAction({
+			actionType: CardConstants.TOGGLE_MODAL
+		})
+	},
+	gameOver: function(){
+		AppDispatcher.handleViewAction({
+			actionType: CardConstants.GAME_OVER
+		})
+	},
+	submitScore: function(data){
+		AppDispatcher.handleViewAction({
+			actionType: CardConstants.SUBMIT_SCORE,
+			data: data
+		})
 	}
-
 };
 
 module.exports = CardActions;

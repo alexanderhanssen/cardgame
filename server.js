@@ -22,6 +22,24 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
+app.get('/score.json', function(req, res) {
+  fs.readFile('score.json', function(err, data) {
+    res.setHeader('Cache-Control', 'no-cache');
+    res.json(JSON.parse(data));
+  });
+});
+
+app.post('/score.json', function(req, res) {
+  fs.readFile('score.json', function(err, data) {
+    var score = JSON.parse(data);
+    score.push(req.body);
+    fs.writeFile('score.json', JSON.stringify(score, null, 4), function(err) {
+      res.setHeader('Cache-Control', 'no-cache');
+      res.json(score);
+    });
+  });
+});
+
 app.listen(app.get('port'), function() {
   console.log('Server started');
 });

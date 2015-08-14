@@ -24,6 +24,9 @@ var CardsLeft = React.createClass({
   componentWillUnmount: function() {
     CardStore.removeChangeListener(this._onChange);
   },
+  responseHandler: function(err, data){
+    console.log(data);
+  },
 
   render: function() {
     var cardsLeft = CardStore.getCardsLeftText();

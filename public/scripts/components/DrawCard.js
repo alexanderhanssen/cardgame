@@ -3,6 +3,8 @@ var CardStore = require('../CardStore');
 var CardsLeft = require('./CardsLeft');
 var Rules = require('./Rules');
 var Language = require('./Language');
+var HighScore = require('./HighScore');
+var SubmitScore = require('./SubmitScore');
 
 function getComponentState(){
 	return {
@@ -13,6 +15,9 @@ function getComponentState(){
 var DrawCard = React.createClass({
 	handleClick: function(e){
 		CardActions.drawCard();
+	},
+	openHighscore: function(){
+		CardActions.toggleModal();
 	},
 	getInitialState: function() {
     	return getComponentState();
@@ -25,18 +30,38 @@ var DrawCard = React.createClass({
   	},
 	render: function() {
 		var className = "cards drawn-" + (52 - this.state.cardsLeft);
-		return (
-            <div className="draw-card">
-				<div onClick={this.handleClick} className={className}>
-					<div></div>
-					<div></div>
-					<div></div>
+		if(this.state.cardsLeft === 0){
+			return (
+	            <div className="draw-card">
+					<SubmitScore/>
+					<CardsLeft/>
+					<Rules/>
+					<Language/>
+					<HighScore/>
+					<div className="open-highscore" onClick={this.openHighscore}>
+						Plasseringer
+					</div>
 				</div>
-				<CardsLeft/>
-				<Rules/>
-				<Language/>
-			</div>
-		)
+			)
+		}else{
+			return (
+	            <div className="draw-card">
+					<div onClick={this.handleClick} className={className}>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+					<CardsLeft/>
+					<Rules/>
+					<Language/>
+					<HighScore/>
+					<div className="open-highscore" onClick={this.openHighscore}>
+						Plasseringer
+					</div>
+				</div>
+			)
+		}
+		
 	},
 	_onChange: function(){
 		this.setState(getComponentState());

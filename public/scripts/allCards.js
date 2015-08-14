@@ -1,6 +1,6 @@
 var allCards = ["Spades", "Hearts", "Clubs", "Diamonds"].reduce(function (acc, current) {
   var cards = [];
-  for(var i = 2; i < 15; ++i) {
+  for(var i = 2; i < 4; ++i) {
     cards = cards.concat({
       suit: current,
       number: i,

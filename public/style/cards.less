@@ -16,6 +16,11 @@ html, body, #content, .game, .table-cards{
   cursor: pointer;
 }
 
+#content{
+  transition: .5s opacity ease-in;
+  opacity: 1;
+}
+
 .front, .back{
   backface-visibility: hidden;
   position: absolute;
@@ -120,11 +125,11 @@ html, body, #content, .game, .table-cards{
   top: 0; bottom: 0; left: 0; right: 0;
 }
 .table{
-  height: 70%;
+  height: 60%;
 }
 .draw-card{
   box-sizing: border-box;
-  height: 30%;
+  height: 40%;
   position: relative;
   padding: 30px 0;
   .cards{
@@ -212,7 +217,7 @@ html, body, #content, .game, .table-cards{
   &.open{
     left: 0;
     margin-left: 0;
-
+    background-color: white;
     &:hover{
       .triangle{
         left: -5px;
@@ -295,4 +300,36 @@ html, body, #content, .game, .table-cards{
 
 .example-appear.example-appear-active {
   transform: scale(1) translate3d(0,0,0);
+}
+
+.all-scores, .score-header{
+  text-align: center;
+}
+
+.all-scores{
+  padding: 15px;
+}
+
+.single-score{
+  div{
+    display: inline-block;
+  }
+}
+
+.game-over-btn, .open-highscore, .close-modal{
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.game-over-btn{
+  text-align: center;
+}
+
+.submit-wrapper{
+  text-align: center;
+  padding-top: 25px;
+  border-top: 1px solid gray;
+  div{
+    padding: 20px;
+  }
 }

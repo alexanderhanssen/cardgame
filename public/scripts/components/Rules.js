@@ -33,10 +33,10 @@ var Rules = React.createClass({
 		var text = rulesText.text;
 		var className = this.state.closed ? "rules closed" : "rules open";
 		return (
-				<div className={className}>
-					<h3 onClick={this.handleClick}><span className="triangle"></span>{header}</h3>
-					<div className="text">{text}</div>
-				</div>
+			<div className={className}>
+				<h3 onClick={this.handleClick}><span className="triangle"></span>{header}</h3>
+				<div className="text">{text}</div>
+			</div>
 		);
 	},
 	_onChange: function() {
