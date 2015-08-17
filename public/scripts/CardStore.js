@@ -89,7 +89,7 @@ function submitScore(name){
 		Name: name,
 		Date: new Date()
 	};
-	xhr.post('http://kortspill-api.azurewebsites.net/api/records').send(data)
+	xhr.post('//kortspill-api.azurewebsites.net/api/records').send(data)
 		.end(function(err, res){
 			if(res.ok){
 				_hasSubmittedScore = true;
@@ -168,7 +168,7 @@ var CardStore = assign({}, EventEmitter.prototype, {
 	getScore: function(){
 		var that = this;
 		if(!_scoreFetched){
-			xhr.get('http://kortspill-api.azurewebsites.net/api/records').end(function(err, res) {
+			xhr.get('//kortspill-api.azurewebsites.net/api/records').end(function(err, res) {
 		  		if(err) {
 		          	console.log(err);
 		      	} else {
