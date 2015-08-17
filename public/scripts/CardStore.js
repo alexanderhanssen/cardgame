@@ -169,7 +169,7 @@ var CardStore = assign({}, EventEmitter.prototype, {
 	getScore: function(){
 		var that = this;
 		var apiUrl = process.env.NODE_ENV === 'production' ? '//kortspill-api.azurewebsites.net/api/records' : '/score.json';
-		if(!_scoreFetched){
+		if(!_scoreFetched && _modalIsOpen){
 			xhr.get(apiUrl).end(function(err, res) {
 		  		if(err) {
 		          	console.log(err);

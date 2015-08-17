@@ -18,8 +18,11 @@ Modal.setAppElement(appElement);
 Modal.injectCSS();
 
 var HighScore = React.createClass({
-  submitScore: function(){
-    CardActions.submitScore(this.state.playerName);
+  submitScore: function(e){
+    e.preventDefault();
+    if(this.state.playerName.length > 0){
+      CardActions.submitScore(this.state.playerName);
+    }
   },
   handleInputChange: function(event){
     this.setState({playerName: event.target.value});
@@ -42,10 +45,11 @@ var HighScore = React.createClass({
     CardActions.toggleModal();
   },
   render: function() {
+    var stacksText = CardStore.getStacksText();
     var scores = this.state.score.map(function(score, index){
       return (
         <div className="single-score" key={index}>
-          <div>{score.Score} bunker - {score.Name}</div>
+          <div>{score.Score} {stacksText} - {score.Name}</div>
         </div>
       );
     });
@@ -64,14 +68,16 @@ var HighScore = React.createClass({
       return (
         <Modal isOpen={this.state.open} onRequestClose={this.closeModal}>
             <div className="close-modal" onClick={this.closeModal}>X</div>
-            <h1 className="score-header">HighScore</h1>
+            <h1 className="score-header">Rekorder</h1>
             <div className="all-scores">
               {scores}
             </div>
             <div className="submit-wrapper">
-              <input type="text" id="player-name" value={this.state.playerName} onChange={this.handleInputChange} required pattern=".{3,}"/>
-              <div>{score} bunker</div>
-              <button onClick={this.submitScore}>Send inn</button>
+              <form className="submit-form" onSubmit={this.submitScore}>
+                <input type="text" id="player-name" value={this.state.playerName} onChange={this.handleInputChange} required pattern=".{3,}"/>
+                <div>{score} {stacksText}</div>
+                <input type="submit" value="Send inn"/>
+              </form>
             </div>
         </Modal>
       )

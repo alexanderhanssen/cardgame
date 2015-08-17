@@ -189,6 +189,7 @@ html, body, #content, .game, .table-cards{
     cursor: pointer;
     transition: all 1s ease-in;
     position: relative;
+    display: inline-block;
   }
   .triangle{
     position: absolute;
@@ -206,13 +207,14 @@ html, body, #content, .game, .table-cards{
   .text{
     opacity: 0;
     transition: all .5s ease-out;
+    overflow: hidden;
   }
   position: absolute;
   left: 50%;
   margin-left: -180px;
   max-width: 300px;
   transition: all .5s ease-in;
-  -webkit-transition: all .5s ease-in;
+  -webkit-transition: all opacity .5s ease-in;
 
   &.closed:hover{
     .triangle{
@@ -323,13 +325,31 @@ html, body, #content, .game, .table-cards{
   }
 }
 
-.game-over-btn, .open-highscore, .close-modal{
+.game-over-btn, .open-highscore, .close-modal, .restart-btn{
   cursor: pointer;
   font-size: 18px;
 }
 
-.game-over-btn{
-  text-align: center;
+.close-modal{
+  padding: 40px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.open-highscore{
+  display: inline-block;
+}
+
+.game-over-btn, .restart-btn{
+  font-size: 20px;
+  display: inline-block;
+  left: 50%;
+  position: absolute;
+  margin-left: -50px;
+  border-bottom: 1px solid gray;
+  padding-bottom: 5px;
+  z-index: 1337;
 }
 
 .submit-wrapper{
