@@ -89,7 +89,8 @@ function submitScore(name){
 		Name: name,
 		Date: new Date()
 	};
-	xhr.post('//kortspill-api.azurewebsites.net/api/records').send(data)
+	var apiUrl = process.env.NODE_ENV === 'production' ? '//kortspill-api.azurewebsites.net/api/records' : '/score.json';
+	xhr.post(apiUrl).send(data)
 		.end(function(err, res){
 			if(res.ok){
 				_hasSubmittedScore = true;
@@ -167,13 +168,12 @@ var CardStore = assign({}, EventEmitter.prototype, {
 	},
 	getScore: function(){
 		var that = this;
-		console.log(process.env.NODE_ENV);
+		var apiUrl = process.env.NODE_ENV === 'production' ? '//kortspill-api.azurewebsites.net/api/records' : '/score.json';
 		if(!_scoreFetched){
-			xhr.get('//kortspill-api.azurewebsites.net/api/records').end(function(err, res) {
+			xhr.get(apiUrl).end(function(err, res) {
 		  		if(err) {
 		          	console.log(err);
 		      	} else {
-		      		console.log(res);
 		      		_scoreFetched = true;
 		      		var sortedTop15 = _.take(_.sortByOrder(res.body,['Score'],['asc']), 15);
 		      		_highScore = sortedTop15;
