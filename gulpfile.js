@@ -8,6 +8,7 @@ var less = require('gulp-less');
 var minifyCSS = require('gulp-minify-css');
 var postcss      = require('gulp-postcss');
 var autoprefixer = require('autoprefixer-core');
+var envify = require('envify');
 
 gulp.task('watch', function () {
   var watcher = watchify(
@@ -17,9 +18,10 @@ gulp.task('watch', function () {
       cache: {},
       packageCache: {},
     })
-      .transform(babelify)
+      
    );
-
+  watcher.transform(babelify);
+  watcher.transform(envify);
   function bundle () {
     return watcher
       .bundle()
@@ -45,6 +47,7 @@ gulp.task('build', function(){
         debug: false
     });
     bundle.transform(babelify);
+    bundle.transform(envify);
        
     return bundle.bundle()
         .pipe(source('bundle.js'))
