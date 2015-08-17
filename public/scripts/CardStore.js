@@ -85,10 +85,11 @@ function toggleModal(){
 function submitScore(name){
 	var score = _tableCards.length;
 	var data = {
-		score: score,
-		name: name
+		Score: score,
+		Name: name,
+		Date: new Date()
 	};
-	xhr.post('/score.json').send(data)
+	xhr.post('http://kortspill-api.azurewebsites.net/api/records').send(data)
 		.end(function(err, res){
 			if(res.ok){
 				_hasSubmittedScore = true;
@@ -167,12 +168,13 @@ var CardStore = assign({}, EventEmitter.prototype, {
 	getScore: function(){
 		var that = this;
 		if(!_scoreFetched){
-			xhr.get('/score.json').end(function(err, res) {
+			xhr.get('http://kortspill-api.azurewebsites.net/api/records').end(function(err, res) {
 		  		if(err) {
 		          	console.log(err);
 		      	} else {
+		      		console.log(res);
 		      		_scoreFetched = true;
-		      		var sortedTop15 = _.take(_.sortByOrder(res.body,['score'],['asc']), 15);
+		      		var sortedTop15 = _.take(_.sortByOrder(res.body,['Score'],['asc']), 15);
 		      		_highScore = sortedTop15;
 		      		that.emitChange();
 		      }

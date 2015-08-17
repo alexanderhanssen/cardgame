@@ -45,7 +45,7 @@ var HighScore = React.createClass({
     var scores = this.state.score.map(function(score, index){
       return (
         <div className="single-score" key={index}>
-          <div>{score.score} bunker - {score.name}</div>
+          <div>{score.Score} bunker - {score.Name}</div>
         </div>
       );
     });
