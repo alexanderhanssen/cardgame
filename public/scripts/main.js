@@ -3,11 +3,12 @@ window.React = React;
 var Table = require('./components/Table');
 var DrawCard = require('./components/DrawCard');
 var CardActions = require('./CardActions');
+var CardStore = require('./CardStore');
 
 var Game = React.createClass({
 	componentDidMount: function(){
 		document.addEventListener("keydown", function(event){
-			if(event.keyCode === 32){
+			if(event.keyCode === 32 && CardStore.getCardsLeftCount() > 0){
 				CardActions.drawCard();
 			}
 		},false);

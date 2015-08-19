@@ -47,6 +47,9 @@ var HighScore = React.createClass({
         </div>
       );
     });
+    if(scores.length === 0){
+      scores = React.createElement('div', {className: 'spinner'});
+    }
     if(this.state.gameOver && this.state.hasSubmittedScore || !this.state.gameOver){
       return (
         <Modal isOpen={this.state.open} onRequestClose={this.closeModal}>
