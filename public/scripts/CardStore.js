@@ -126,13 +126,13 @@ var CardStore = assign({}, EventEmitter.prototype, {
 		if(_language === "no"){
 			return {
 				header: "Regler",
-				text: "Flytt ett kort over ett annet med samme kappe(♠, ♦, ♥, ♣) eller samme verdi. Du kan kun flytte kortet en eller tre posisjoner til venstre"
+				text: "Flytt ett kort over ett annet med samme kappe(♠, ♦, ♥, ♣) eller samme verdi. Du kan kun flytte kortet en eller tre posisjoner til venstre. Målet er færrest mulig bunker når alle kort er trekt."
 			}
 		}
 		if(_language === "en"){
 			return {
 				header: "Rules",
-				text: "Move a card over another with the same suit(♠, ♦, ♥, ♣) or same value. You can only move the card one or three positions to the left."
+				text: "Move a card over another with the same suit(♠, ♦, ♥, ♣) or same value. You can only move the card one or three positions to the left. The goal is to have as few stacks as possible when all cards are drawn."
 			}
 		}
 	},

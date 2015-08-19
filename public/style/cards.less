@@ -22,6 +22,7 @@ html, body, #content, .game, .table-cards{
   opacity: 1;
 }
 
+//Card on table
 .front, .back{
   backface-visibility: hidden;
   position: absolute;
@@ -69,6 +70,32 @@ html, body, #content, .game, .table-cards{
   transform-origin: 100% 90px;
   transform-style: preserve-3d;
 }
+
+.example-appear {
+  transform: scale(1.3) translate3d(0, 100px, 100px);
+  transition: transform .5s ease-in;
+  -webkit-transition: transform .5s ease-in;
+}
+.example-appear.example-appear-active {
+  transform: scale(1) translate3d(0,0,0);
+}
+.example-appear .flipper{
+  transform: rotateX(180deg);
+  transition: transform .5s ease-in;
+  -webkit-transition: transform .5s ease-in;
+  &.left{
+    transform: rotateX(180deg) rotateZ(10deg) translateX(280px) translateY(-200px);
+  }
+  &.right{
+    transform: rotateX(180deg) rotateZ(-10deg) translateX(-280px) translateY(-200px);
+  }
+}
+.example-appear.example-appear-active .flipper{
+  transform: rotateX(0deg) rotateZ(0deg) translateX(0) translateY(0);
+}
+
+
+
 .box {
   vertical-align: top;
   box-sizing: border-box;
@@ -125,10 +152,15 @@ html, body, #content, .game, .table-cards{
   margin-bottom: auto;
   position: absolute;
   top: 0; bottom: 0; left: 0; right: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 .table{
   height: 60%;
 }
+
+//Lower half, draw card and all other buttons
 .draw-card{
   box-sizing: border-box;
   height: 40%;
@@ -177,6 +209,24 @@ html, body, #content, .game, .table-cards{
   }
 }
 
+.draw-card .cards div:nth-child(3):hover{
+  transform: scale(1.05) translateY(-15px);
+}
+
+
+.drawn-50{
+  div:nth-child(1){ display: none};
+}
+.drawn-51{
+  div:nth-child(1){ display: none};
+  div:nth-child(2){ display: none};
+}
+.drawn-52{
+  div:nth-child(1){ display: none};
+  div:nth-child(2){ display: none};
+  div:nth-child(3){ display: none};
+}
+
 .card-counter{
     position: absolute;
     left: 50%;
@@ -203,11 +253,8 @@ html, body, #content, .game, .table-cards{
     -webkit-transition: all .5s ease-in;
     transform: rotate(0deg) translate(0,0) rotate(0deg);
   }
-
   .text{
-    opacity: 0;
-    transition: all .5s ease-out;
-    overflow: hidden;
+    display: none;
   }
   position: absolute;
   left: 50%;
@@ -215,7 +262,6 @@ html, body, #content, .game, .table-cards{
   max-width: 300px;
   transition: all .5s ease-in;
   -webkit-transition: all opacity .5s ease-in;
-
   &.closed:hover{
     .triangle{
       left: -25px;
@@ -231,7 +277,7 @@ html, body, #content, .game, .table-cards{
       }
     }
     .text{
-      opacity: 1;
+      display: inline-block;
     }
     .triangle{
       border-left: 8px solid black;
@@ -262,53 +308,9 @@ html, body, #content, .game, .table-cards{
 .lang-no .no{
   font-weight: bold;
 }
-.drawn-50{
-  div:nth-child(1){ display: none};
-}
-.drawn-51{
-  div:nth-child(1){ display: none};
-  div:nth-child(2){ display: none};
-}
-.drawn-52{
-  div:nth-child(1){ display: none};
-  div:nth-child(2){ display: none};
-  div:nth-child(3){ display: none};
-}
+
 .card-stacks{
   position: absolute;
-}
-
-.draw-card .cards.drawn-50 div:nth-child(1){
-  display: none;
-}
-.draw-card .cards.drawn-51 div:nth-child(2){
-  display: none;
-}
-.draw-card .cards.drawn-52 div:nth-child(3){
-  display: none;
-}
-
-.draw-card .cards div:nth-child(3):hover{
-  transform: scale(1.05) translateY(-30px);
-}
-
-.example-appear {
-  transform: scale(1.3) translate3d(0, 100px, 100px);
-  transition: transform .5s ease-in;
-  -webkit-transition: transform .5s ease-in;
-}
-
-.example-appear .flipper{
-  transform: rotateX(180deg);
-  transition: transform .5s ease-in;
-  -webkit-transition: transform .5s ease-in;
-}
-.example-appear.example-appear-active .flipper{
-  transform: rotateX(0deg);
-}
-
-.example-appear.example-appear-active {
-  transform: scale(1) translate3d(0,0,0);
 }
 
 .all-scores, .score-header{
