@@ -4,7 +4,7 @@
   "description": "Some sort of card game",
   "main": "server.js",
   "scripts": {
-    "postinstall": "gulp bundle-js-css",
+    "postinstall": "gulp -v && gulp bundle-js-css",
     "start": "node server.js"
   },
   "dependencies": {
