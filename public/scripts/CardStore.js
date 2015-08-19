@@ -8,6 +8,7 @@ var xhr = require('superagent');
 
 var CHANGE_EVENT = 'change';
 
+//Initial values
 var _tableCards = [];
 var _handsCards = _.shuffle(allCards.getAll());
 var _cardsLeftCount = _handsCards.length;
@@ -29,6 +30,7 @@ function drawCard(){
 	_tableCards.push(cardToPlaceOnTable);
 	_consecutiveCardMoves = 0;
 }
+
 function changeLang(lang){
 	_language = lang;
 }
@@ -90,8 +92,7 @@ function submitScore(name){
 		Date: new Date()
 	};
 	var apiUrl = process.env.NODE_ENV === 'production' ? '//kortspill-api.azurewebsites.net/api/records' : '/score.json';
-	xhr.post(apiUrl).send(data)
-		.end(function(err, res){
+	xhr.post(apiUrl).send(data).end(function(err, res){
 			if(res.ok){
 				_hasSubmittedScore = true;
 				_scoreFetched = false;
@@ -99,22 +100,19 @@ function submitScore(name){
 			}else{
 				console.log(err);
 			}
-		});
+	});
 }
 
 var CardStore = assign({}, EventEmitter.prototype, {
 	getCardsLeftCount: function(){
 		return _cardsLeftCount;
 	},
-
 	getCardStackCount: function(){
 		return _tableCards.length;
 	},
-
 	getTableCards: function(){
 		return _tableCards;
 	},
-
 	getHandsCards: function(){
 		return _handsCards;
 	},
@@ -171,23 +169,21 @@ var CardStore = assign({}, EventEmitter.prototype, {
 		var apiUrl = process.env.NODE_ENV === 'production' ? '//kortspill-api.azurewebsites.net/api/records' : '/score.json';
 		if(!_scoreFetched && _modalIsOpen){
 			xhr.get(apiUrl).end(function(err, res) {
-		  		if(err) {
-		          	console.log(err);
-		      	} else {
-		      		_scoreFetched = true;
-		      		var sortedTop15 = _.take(_.sortByOrder(res.body,['Score'],['asc']), 15);
-		      		_highScore = sortedTop15;
-		      		that.emitChange();
-		      }
+	  		if(err) {
+          	console.log(err);
+	      	}else{
+	      		_scoreFetched = true;
+	      		var sortedTop15 = _.take(_.sortByOrder(res.body,['Score'],['asc']), 15);
+	      		_highScore = sortedTop15;
+	      		that.emitChange();
+	      }
 			});
 		}
-		
 		return _highScore;
 	},
 	isModalOpen: function(){
 		return _modalIsOpen;
 	},
-
 	isGameOver: function(){
 		return _gameOver;
 	},

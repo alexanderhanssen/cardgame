@@ -11,21 +11,24 @@ function getAppState(){
 
 var Table = React.createClass({
 	componentDidMount: function() {
-	    CardStore.addChangeListener(this._onChange);
+    CardStore.addChangeListener(this._onChange);
+	},
+	getInitialState: function() {
+  	return getAppState();
+	},
+	render: function() {
+		if(this.state.tableCards.length){
+		   return (
+  			<div className="table">
+  				<TableCardList data={this.state.tableCards}/>
+  			</div>
+		   );
+    }
+    return (
+     <div className="table"></div>
+    );
   	},
-  	getInitialState: function() {
-    	return getAppState();
-  	},
-  	render: function() {
-  		if(this.state.tableCards.length){
-			   return (
-	  			<div className="table">
-	  				<TableCardList data={this.state.tableCards}/>
-	  			</div>
-			   );
-      }
-      return ( <div className="table"></div>);
-  	},
+
   	_onChange: function() {
     	this.setState(getAppState());
   	}

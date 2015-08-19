@@ -2,6 +2,7 @@ var Draggable = require('react-draggable');
 var CardStore = require('../CardStore');
 var ReactAnimate = React.addons.CSSTransitionGroup;
 
+//Stack rendered under each card as soon one or more card is stacked on top of each other
 var CardStack = React.createClass({
 	render: function() {
 		return (
@@ -17,13 +18,6 @@ var TableCard = React.createClass({
     },
     onDrag: function(event, ui){
     	event.preventDefault();
-    	// var topPos = ui.position.top;
-    	// if(topPos < 0){
-    	// 	var val = Math.abs(topPos);
-    	// 	ui.node.style.boxShadow = "0 " + val + "px rgba(0, 0, 0, 0.05)";
-    	// }else{
-    	// 	ui.node.style.boxShadow = "0 0";
-    	// }
     },
     getSuitIcon: function(){
 		var suitIcon;
@@ -98,47 +92,47 @@ var TableCard = React.createClass({
 				bottom: "0px"
 			};
 		}
-		
+		//Animation when drawing card
 		if(CardStore.getConsecutiveCardMoves() === 0 && this.props.index + 1 === CardStore.getCardStackCount() && !this.state.mounted){
 			return (
 				<Draggable
-	                zIndex={100}
-	                start={{x: 0, y: 0}}
-	                moveOnStartChange={true}
-	                bounds={{left: -600, right: 0}}
-	                {...drags}>
-	                <span>
-					<ReactAnimate transitionName="example" transitionAppear={true} component="div" className="flip-container">
-		                <span className={style}>
-			                <div className="flipper"> 
-		                		<div className="front">
-									<h1>{this.getNumberIcon()} {this.getSuitIcon()}</h1>
-								</div>
-								<div className="back"></div>
-			                </div>
-		                </span>
-		            </ReactAnimate>
-		            </span>
-	            </Draggable>
+          zIndex={100}
+          start={{x: 0, y: 0}}
+          moveOnStartChange={true}
+          bounds={{left: -600, right: 0}}
+          {...drags}>
+          <span>
+						<ReactAnimate transitionName="example" transitionAppear={true} component="div" className="flip-container">
+              <span className={style}>
+                <div className="flipper"> 
+              		<div className="front">
+										<h1>{this.getNumberIcon()} {this.getSuitIcon()}</h1>
+									</div>
+									<div className="back"></div>
+                </div>
+              </span>
+            </ReactAnimate>
+          </span>
+        </Draggable>
 			)
 		}
 		
 		return (
 			<Draggable
-                zIndex={100}
-                start={{x: 0, y: 0}}
-                moveOnStartChange={true}
-                bounds={{left: -600, right: 0}}
-                {...drags}>
-                <span className={style}>
+	      zIndex={100}
+	      start={{x: 0, y: 0}}
+	      moveOnStartChange={true}
+	      bounds={{left: -600, right: 0}}
+	      {...drags}>
+	      <span className={style}>
 					<div>
 						<h1>{this.getNumberIcon()} {this.getSuitIcon()}</h1>
 					</div>
 					<div className="stacks" style={stackStyle}>
 						{stacks}
 					</div>
-                </span>
-            </Draggable>
+        </span>
+      </Draggable>
 		);
 	}
 });

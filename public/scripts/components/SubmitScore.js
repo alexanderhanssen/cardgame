@@ -16,20 +16,20 @@ var SubmitScore = React.createClass({
 		window.location.reload();
 	},
 	getInitialState: function() {
-    	return getComponentState();
-  	},
+  	return getComponentState();
+	},
 	componentDidMount: function() {
 		CardStore.addChangeListener(this._onChange);
 	},
 	componentWillUnmount: function() {
 		CardStore.removeChangeListener(this._onChange);
-  	},
+	},
 	render: function() {
 		if(!this.state.hasSubmittedScore){
 			return (
-	            <div className="game-over-btn" onClick={this.submitScore}>
-	            	Send inn poeng
-	         	</div>
+        <div className="game-over-btn" onClick={this.submitScore}>
+        	Send inn poeng
+       	</div>
 			)
 		}else{
 			return (
@@ -37,6 +37,7 @@ var SubmitScore = React.createClass({
 			);
 		}
 	},
+	
 	_onChange: function(){
 		this.setState(getComponentState());
 	}

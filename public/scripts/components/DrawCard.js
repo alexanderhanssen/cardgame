@@ -20,19 +20,19 @@ var DrawCard = React.createClass({
 		CardActions.toggleModal();
 	},
 	getInitialState: function() {
-    	return getComponentState();
-  	},
+  	return getComponentState();
+	},
 	componentDidMount: function() {
 		CardStore.addChangeListener(this._onChange);
 	},
 	componentWillUnmount: function() {
 		CardStore.removeChangeListener(this._onChange);
-  	},
+	},
 	render: function() {
 		var className = "cards drawn-" + (52 - this.state.cardsLeft);
 		if(this.state.cardsLeft === 0){
 			return (
-	            <div className="draw-card">
+        <div className="draw-card">
 					<SubmitScore/>
 					<CardsLeft/>
 					<Rules/>
@@ -45,7 +45,7 @@ var DrawCard = React.createClass({
 			)
 		}else{
 			return (
-	            <div className="draw-card">
+        <div className="draw-card">
 					<div onClick={this.handleClick} className={className}>
 						<div></div>
 						<div></div>

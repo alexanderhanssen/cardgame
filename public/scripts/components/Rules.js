@@ -1,4 +1,3 @@
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 var CardStore = require('../CardStore');
 
 function getComponentState(){
@@ -6,6 +5,7 @@ function getComponentState(){
 		lang: CardStore.getLang()
 	}
 }
+
 var Rules = React.createClass({
 	handleClick: function(){
 		this.setState({
@@ -19,14 +19,11 @@ var Rules = React.createClass({
 		};
 	},
 	componentDidMount: function() {
-	    CardStore.addChangeListener(this._onChange);
-  	},
-
-	  // Unbind change listener
-  	componentWillUnmount: function() {
-	    CardStore.removeChangeListener(this._onChange);
-  	},
-
+    CardStore.addChangeListener(this._onChange);
+	},
+	componentWillUnmount: function() {
+    CardStore.removeChangeListener(this._onChange);
+	},
 	render: function(){
 		var rulesText = CardStore.getRulesText();
 		var header = rulesText.header;
@@ -39,10 +36,10 @@ var Rules = React.createClass({
 			</div>
 		);
 	},
+	
 	_onChange: function() {
     	this.setState(getComponentState());
   	}
-
 });
 
 module.exports = Rules;

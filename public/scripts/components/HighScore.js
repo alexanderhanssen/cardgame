@@ -13,7 +13,6 @@ function getComponentState(){
 }
 
 var appElement = document.getElementById('content');
-
 Modal.setAppElement(appElement);
 Modal.injectCSS();
 
@@ -27,17 +26,12 @@ var HighScore = React.createClass({
   handleInputChange: function(event){
     this.setState({playerName: event.target.value});
   },
-  // Use getAppState method to set initial state
   getInitialState: function() {
     return getComponentState();
   },
-  
-  // Listen for changes
   componentDidMount: function() { 
     CardStore.addChangeListener(this._onChange);
   },
-
-  // Unbind change listener
   componentWillUnmount: function() {
     CardStore.removeChangeListener(this._onChange);
   },
@@ -67,28 +61,26 @@ var HighScore = React.createClass({
       var score = CardStore.getCardStackCount();
       return (
         <Modal isOpen={this.state.open} onRequestClose={this.closeModal}>
-            <div className="close-modal" onClick={this.closeModal}>X</div>
-            <h1 className="score-header">Rekorder</h1>
-            <div className="all-scores">
-              {scores}
-            </div>
-            <div className="submit-wrapper">
-              <form className="submit-form" onSubmit={this.submitScore}>
-                <input type="text" id="player-name" value={this.state.playerName} onChange={this.handleInputChange} required pattern=".{3,}"/>
-                <div>{score} {stacksText}</div>
-                <input type="submit" value="Send inn"/>
-              </form>
-            </div>
+          <div className="close-modal" onClick={this.closeModal}>X</div>
+          <h1 className="score-header">Rekorder</h1>
+          <div className="all-scores">
+            {scores}
+          </div>
+          <div className="submit-wrapper">
+            <form className="submit-form" onSubmit={this.submitScore}>
+              <input type="text" id="player-name" value={this.state.playerName} onChange={this.handleInputChange} required pattern=".{3,}"/>
+              <div>{score} {stacksText}</div>
+              <input type="submit" value="Send inn"/>
+            </form>
+          </div>
         </Modal>
       )
     }
   },
   
-  // Update view state when change event is received
   _onChange: function() {
     this.setState(getComponentState());
   }
-
 });
 
 module.exports = HighScore;

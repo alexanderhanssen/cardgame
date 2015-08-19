@@ -10,24 +10,15 @@ function getComponentState(){
 }
 
 var CardsLeft = React.createClass({
-  // Use getAppState method to set initial state
   getInitialState: function() {
     return getComponentState();
   },
-  
-  // Listen for changes
   componentDidMount: function() {
     CardStore.addChangeListener(this._onChange);
   },
-
-  // Unbind change listener
   componentWillUnmount: function() {
     CardStore.removeChangeListener(this._onChange);
   },
-  responseHandler: function(err, data){
-    console.log(data);
-  },
-
   render: function() {
     var cardsLeft = CardStore.getCardsLeftText();
     var stacks = CardStore.getStacksText();
@@ -39,11 +30,9 @@ var CardsLeft = React.createClass({
     );
   },
   
-  // Update view state when change event is received
   _onChange: function() {
     this.setState(getComponentState());
   }
-
 });
 
 module.exports = CardsLeft;
