@@ -71,7 +71,7 @@ var HighScore = React.createClass({
           </div>
           <div className="submit-wrapper">
             <form className="submit-form" onSubmit={this.submitScore}>
-              <input type="text" id="player-name" value={this.state.playerName} onChange={this.handleInputChange} required pattern=".{3,}"/>
+              <input type="text" id="player-name" value={this.state.playerName} onChange={this.handleInputChange} required pattern=".{3,}" placeholder="Ditt navn her"/>
               <div>{score} {stacksText}</div>
               <input type="submit" value="Send inn"/>
             </form>
