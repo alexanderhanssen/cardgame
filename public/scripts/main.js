@@ -5,6 +5,7 @@ var DrawCard = require('./components/DrawCard');
 var CardActions = require('./CardActions');
 var CardStore = require('./CardStore');
 
+var content = document.getElementById('content');
 var Game = React.createClass({
 	componentDidMount: function(){
 		document.addEventListener("keydown", function(event){
@@ -12,6 +13,7 @@ var Game = React.createClass({
 				CardActions.drawCard();
 			}
 		},false);
+		content.style.opacity = 1;
 	},
 	render: function() {
 		return (
@@ -24,5 +26,5 @@ var Game = React.createClass({
 });
 
 React.render(
-	<Game />, document.getElementById('content')
+	<Game />, content
 );

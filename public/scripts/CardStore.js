@@ -21,18 +21,10 @@ var _scoreFetched = false;
 var _gameOver = false;
 var _hasSubmittedScore = false;
 
-function cardsLeft(){
-	_cardsLeftCount = _handsCards.length;
-}
-
 function drawCard(){
 	var cardToPlaceOnTable = _handsCards.shift();
 	_tableCards.push(cardToPlaceOnTable);
 	_consecutiveCardMoves = 0;
-}
-
-function changeLang(lang){
-	_language = lang;
 }
 
 function placeCard(data){
@@ -77,11 +69,7 @@ function placeCard(data){
 function toggleModal(){
 	_modalIsOpen = !_modalIsOpen;
 	var content = document.getElementById('content');
-	if(_modalIsOpen){
-		content.style.opacity = 0;
-	}else{
-		content.style.opacity = 1;
-	}
+	content.style.opacity = _modalIsOpen ? 0 : 1;
 }
 
 function submitScore(name){
@@ -123,46 +111,22 @@ var CardStore = assign({}, EventEmitter.prototype, {
 		return _language;
 	},
 	getRulesText: function(){
-		if(_language === "no"){
-			return {
+		return _language === "no" ? 
+			{
 				header: "Regler",
-				text: "Flytt ett kort over ett annet med samme kappe(♠, ♦, ♥, ♣) eller samme verdi. Du kan kun flytte kortet en eller tre posisjoner til venstre. Målet er færrest mulig bunker når alle kort er trekt."
-			}
-		}
-		if(_language === "en"){
-			return {
+				text: "Flytt ett kort over ett annet med samme kappe(♠, ♦, ♥, ♣) eller samme verdi. Du kan kun flytte kortet en eller tre posisjoner til venstre. Målet er færrest mulig bunker når alle kort er trukket."
+			} : 
+			{
 				header: "Rules",
 				text: "Move a card over another with the same suit(♠, ♦, ♥, ♣) or same value. You can only move the card one or three positions to the left. The goal is to have as few stacks as possible when all cards are drawn."
 			}
-		}
 	},
 	getCardsLeftText: function(){
-		if(_language === "no"){
-			return "kort igjen";
-		}
-		if(_language === "en"){
-			if(this.getCardsLeftCount() === 1){
-				return "card left";
-			}else{
-				return "cards left";
-			}
-		}
+		return _language === "no" ? "kort igjen" : this.getCardsLeftCount() === 1 ? "card left" : "cards left";
 	},
 	getStacksText: function(){
-		if(_language === "no"){
-			if(this.getCardStackCount() === 1){
-				return "bunke";
-			}else{
-				return "bunker";
-			}
-		}
-		if(_language === "en"){
-			if(this.getCardStackCount() ===  1){
-				return "stack";
-			}else{
-				return "stacks";
-			}
-		}
+		var stackCount = this.getCardStackCount();
+		return _language === "no" ? (stackCount === 1 ? "bunke" : "bunker") : (stackCount === 1 ? "stack" : "stacks");
 	},
 	getScore: function(){
 		var that = this;
@@ -215,7 +179,7 @@ AppDispatcher.register(function(payload) {
 	switch(action.actionType) {
 		case CardConstants.DRAW_CARD:
 			drawCard();
-			cardsLeft();
+			_cardsLeftCount = _handsCards.length;
 			CardStore.emitChange();
 			break;
 
@@ -224,7 +188,7 @@ AppDispatcher.register(function(payload) {
 			CardStore.emitChange();
 			break;
 		case CardConstants.CHANGE_LANG:
-			changeLang(action.lang);
+			_language = action.lang;
 			CardStore.emitChange();
 			break;
 		case CardConstants.GET_HIGHSCORE:

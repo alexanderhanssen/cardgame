@@ -40,7 +40,7 @@ var HighScore = React.createClass({
   },
   render: function() {
     var stacksText = CardStore.getStacksText();
-    var scores = this.state.score.map(function(score, index){
+    var scores = this.state.score.map((score, index) => {
       return (
         <div className="single-score" key={index}>
           <div>{score.Score} {stacksText} - {score.Name}</div>
